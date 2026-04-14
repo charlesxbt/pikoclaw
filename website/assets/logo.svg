@@ -1,28 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 100" width="390" height="100">
   <defs>
-    <linearGradient id="clawGrad" x1="20%" y1="0%" x2="80%" y2="100%">
-      <stop offset="0%" stop-color="#ffd060"/>
-      <stop offset="38%" stop-color="#f06218"/>
-      <stop offset="100%" stop-color="#5a1200"/>
+    <!-- Bright claw gradient: yellow → vivid orange -->
+    <linearGradient id="clawGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#fff176"/>
+      <stop offset="40%"  stop-color="#ff9800"/>
+      <stop offset="100%" stop-color="#e64a00"/>
     </linearGradient>
-    <radialGradient id="bgWarm" cx="50%" cy="42%" r="52%">
-      <stop offset="0%" stop-color="#2a0e00" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
-    </radialGradient>
-    <filter id="glowFX" x="-50%" y="-15%" width="200%" height="130%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+    <!-- Icon bg: vivid orange-to-amber -->
+    <linearGradient id="iconBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#ff6d00"/>
+      <stop offset="100%" stop-color="#ffab00"/>
+    </linearGradient>
+    <!-- Glow for claw marks -->
+    <filter id="glowFX" x="-40%" y="-10%" width="180%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
       <feColorMatrix in="blur" type="matrix"
-        values="2 0 0 0 0.8   0.6 0 0 0 0.15   0 0 0 0 0   0 0 0 1 0"
+        values="1 0 0 0 1   0.8 0 0 0 0.4   0 0 0 0 0   0 0 0 0.9 0"
         result="glow"/>
       <feMerge>
         <feMergeNode in="glow"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    <!-- Glow for CLAW text -->
     <filter id="textGlow" x="-10%" y="-20%" width="120%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
       <feColorMatrix in="blur" type="matrix"
-        values="2 0 0 0 0.9   0.5 0 0 0 0.25   0 0 0 0 0   0 0 0 0.6 0"
+        values="1 0 0 0 1   0.5 0 0 0 0.3   0 0 0 0 0   0 0 0 0.7 0"
         result="glow"/>
       <feMerge>
         <feMergeNode in="glow"/>
@@ -30,69 +34,74 @@
       </feMerge>
     </filter>
     <clipPath id="iconClip">
-      <rect width="100" height="100" rx="18"/>
+      <rect width="100" height="100" rx="20"/>
     </clipPath>
   </defs>
 
-  <!-- ── ICON BLOCK (100×100) ── -->
-  <rect width="100" height="100" rx="18" fill="#080604"/>
+  <!-- ── ICON BLOCK ── -->
+  <rect width="100" height="100" rx="20" fill="url(#iconBg)"/>
   <g clip-path="url(#iconClip)">
-    <rect width="100" height="100" fill="url(#bgWarm)"/>
-    <rect width="100" height="5" fill="#e85d04"/>
+    <!-- Bright top highlight -->
+    <rect width="100" height="4" fill="#ffffff" opacity="0.35"/>
+    <!-- Shine overlay -->
+    <ellipse cx="50" cy="30" rx="45" ry="28" fill="#ffffff" opacity="0.12"/>
     <!-- LEFT claw -->
-    <path d="M 19,17 L 31,17 C 33,42 26,70 22,90 C 18,70 13,42 19,17 Z"
+    <path d="M 19,15 L 31,15 C 34,38 27,68 23,90 C 19,68 13,38 19,15 Z"
           fill="url(#clawGrad)" filter="url(#glowFX)"/>
     <!-- CENTER claw -->
-    <path d="M 44,11 L 56,11 C 60,30 54,75 50,96 C 46,75 40,30 44,11 Z"
+    <path d="M 44,8 L 57,8 C 61,28 55,72 50,96 C 45,72 39,28 44,8 Z"
           fill="url(#clawGrad)" filter="url(#glowFX)"/>
     <!-- RIGHT claw -->
-    <path d="M 69,17 L 81,17 C 87,42 82,70 78,90 C 74,70 67,42 69,17 Z"
+    <path d="M 69,15 L 81,15 C 87,38 82,68 78,90 C 74,68 67,38 69,15 Z"
           fill="url(#clawGrad)" filter="url(#glowFX)"/>
+    <!-- Bottom shadow inner -->
+    <rect y="88" width="100" height="12" fill="#c43b00" opacity="0.25"/>
   </g>
 
   <!-- ── WORDMARK ── -->
-  <!-- PIKO — white/cream, heavy weight -->
-  <text x="118" y="64"
+  <!-- PIKO — deep charcoal, bold -->
+  <text x="118" y="66"
         font-family="'Arial Black', Impact, sans-serif"
-        font-size="52" font-weight="900"
-        fill="#f2ede8"
+        font-size="54" font-weight="900"
+        fill="#1a1a2e"
         letter-spacing="-1">PIKO</text>
 
-  <!-- CLAW — orange + glow -->
-  <text x="241" y="64"
+  <!-- CLAW — vivid orange with glow -->
+  <text x="243" y="66"
         font-family="'Arial Black', Impact, sans-serif"
-        font-size="52" font-weight="900"
-        fill="#f06218"
+        font-size="54" font-weight="900"
+        fill="#ff6d00"
         filter="url(#textGlow)"
         letter-spacing="-1">CLAW</text>
 
-  <!-- Claw-scratch accent line under CLAW -->
-  <line x1="241" y1="70" x2="385" y2="70"
-        stroke="#f06218" stroke-width="2.5"
-        stroke-linecap="round" opacity="0.45"/>
+  <!-- Accent underline for CLAW -->
+  <line x1="243" y1="72" x2="388" y2="72"
+        stroke="#ff9800" stroke-width="3"
+        stroke-linecap="round" opacity="0.6"/>
 
   <!-- Tagline -->
-  <text x="118" y="86"
-        font-family="'Courier New', 'Lucida Console', monospace"
+  <text x="118" y="87"
+        font-family="'Courier New', monospace"
         font-size="10"
-        fill="#9a8878"
-        letter-spacing="2.5">AI AGENT SKILLS · USDC ON BASE</text>
+        fill="#555577"
+        letter-spacing="2.2">AI AGENT SKILLS · USDC ON BASE</text>
 
-  <!-- Small tech badge — x402 -->
-  <rect x="118" y="90" width="38" height="10" rx="3"
-        fill="#e85d04" opacity="0.18"/>
-  <text x="121" y="98"
+  <!-- x402 badge -->
+  <rect x="118" y="91" width="38" height="11" rx="3"
+        fill="#ff6d00" opacity="0.15"/>
+  <text x="121" y="99.5"
         font-family="'Courier New', monospace"
         font-size="8" font-weight="700"
-        fill="#f06218"
+        fill="#ff6d00"
         letter-spacing="1">x402</text>
 
-  <!-- Separator dot -->
-  <circle cx="163" cy="95" r="1.5" fill="#555" opacity="0.7"/>
+  <!-- Dot separator -->
+  <circle cx="163" cy="97" r="1.5" fill="#aaa" opacity="0.8"/>
 
-  <text x="168" y="98"
+  <!-- OPEN SOURCE -->
+  <text x="168" y="100"
         font-family="'Courier New', monospace"
         font-size="8"
-        fill="#604030"
+        fill="#888899"
         letter-spacing="1">OPEN SOURCE</text>
 </svg>
