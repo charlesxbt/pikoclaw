@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="clawGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#ffd060"/>
+      <stop offset="38%" stop-color="#f06218"/>
+      <stop offset="100%" stop-color="#5a1200"/>
+    </linearGradient>
+    <radialGradient id="bgWarm" cx="50%" cy="42%" r="52%">
+      <stop offset="0%" stop-color="#2a0e00" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glowFX" x="-50%" y="-15%" width="200%" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="2 0 0 0 0.8   0.6 0 0 0 0.15   0 0 0 0 0   0 0 0 1 0"
+        result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="iconClip">
+      <rect width="100" height="100" rx="18"/>
+    </clipPath>
+  </defs>
+
+  <!-- Dark background -->
+  <rect width="100" height="100" rx="18" fill="#080604"/>
+
+  <g clip-path="url(#iconClip)">
+    <!-- Warm glow behind claws -->
+    <rect width="100" height="100" fill="url(#bgWarm)"/>
+
+    <!-- Top accent bar -->
+    <rect width="100" height="5" fill="#e85d04"/>
+
+    <!-- LEFT claw — fans slightly left, tip at (22,90) -->
+    <path d="M 19,17 L 31,17
+             C 33,42 26,70 22,90
+             C 18,70 13,42 19,17 Z"
+          fill="url(#clawGrad)" filter="url(#glowFX)"/>
+
+    <!-- CENTER claw — tallest, straight taper to (50,96) -->
+    <path d="M 44,11 L 56,11
+             C 60,30 54,75 50,96
+             C 46,75 40,30 44,11 Z"
+          fill="url(#clawGrad)" filter="url(#glowFX)"/>
+
+    <!-- RIGHT claw — fans slightly right, tip at (78,90) -->
+    <path d="M 69,17 L 81,17
+             C 87,42 82,70 78,90
+             C 74,70 67,42 69,17 Z"
+          fill="url(#clawGrad)" filter="url(#glowFX)"/>
+  </g>
+</svg>
