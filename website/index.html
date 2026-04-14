@@ -6,1101 +6,1399 @@
   <title>PikoClaw — AI Agent Skills Marketplace</title>
   <meta name="description" content="Buy and sell autonomous AI agent skills. GitHub-native. Powered by x402 payments on Base. No sign-up required.">
   <meta property="og:title" content="PikoClaw — AI Agent Skills Marketplace">
-  <meta property="og:description" content="Buy and sell autonomous AI agent skills. GitHub-native. x402 payments on Base.">
+  <meta property="og:description" content="Buy and sell AI agent skills. x402 payments on Base. GitHub-native.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://23998f7b.mogra.site">
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Cpath d='M8 4 C7.5 9 7 16 8 24 C8.5 27 9 30 8 32' stroke='%23c8ff00' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M16 2 C15 8 14.5 15 15 23 C15.5 26 16 29 15 32' stroke='%23c8ff00' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 4 C23.5 9 23 16 23 24 C23 27 22.5 30 21 32' stroke='%23c8ff00' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="logo-icon.svg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #080808;
-      --surface:   #0f0f0f;
-      --surface2:  #141414;
-      --border:    #1c1c1c;
-      --border2:   #252525;
-      --accent:    #c8ff00;
-      --accentD:   rgba(200,255,0,.07);
-      --accentD2:  rgba(200,255,0,.13);
-      --text:      #efefef;
-      --muted:     #5a5a5a;
-      --dim:       #303030;
-      --green:     #4ade80;
-      --blue:      #7dd3fc;
-      --orange:    #fb923c;
-      --purple:    #c4b5fd;
-      --mono:      'IBM Plex Mono', monospace;
-      --r:         2px;
-      --header-h:  52px;
+      --orange:   #e85d04;
+      --orangeD:  #c44d00;
+      --orangeL:  #f7882a;
+      --black:    #0a0a0a;
+      --white:    #f5f0e8;
+      --stripe:   #1a0800;
+      --mono:     'IBM Plex Mono', monospace;
+      --display:  'Bebas Neue', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
     body {
-      background: var(--bg);
-      color: var(--text);
+      background: var(--orange);
+      color: var(--black);
       font-family: var(--mono);
       font-size: 13px;
       line-height: 1.6;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-    /* ── TEXTURE ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(200,255,0,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(200,255,0,.025) 1px, transparent 1px);
-      background-size: 28px 28px;
-      pointer-events: none;
-      z-index: 0;
-    }
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
-      pointer-events: none;
-      z-index: 0;
-    }
-    header, main, section, footer, .top-stripe, .marquee-wrap, .modal-backdrop {
-      position: relative;
-      z-index: 1;
-    }
-    a { color: inherit; text-decoration: none; }
-    button { font-family: var(--mono); cursor: pointer; }
-    code {
-      color: var(--accent);
-      background: var(--accentD);
-      padding: 1px 5px;
-      border-radius: var(--r);
-      font-family: var(--mono);
-      font-size: .88em;
     }
 
-    /* ── TOP STRIPE ── */
-    .top-stripe {
-      height: 3px;
-      background: repeating-linear-gradient(90deg,
-        var(--accent) 0, var(--accent) 14px,
-        transparent 14px, transparent 20px);
+    a { color: inherit; text-decoration: none; }
+
+    /* ── HAZARD STRIPE ── */
+    .hazard {
+      height: 14px;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--black) 0px,
+        var(--black) 10px,
+        var(--orange) 10px,
+        var(--orange) 20px
+      );
+      flex-shrink: 0;
     }
 
     /* ── HEADER ── */
     header {
-      display: flex; align-items: center;
-      padding: 0 24px; height: var(--header-h);
-      border-bottom: 1px solid var(--border);
-      background: rgba(8,8,8,.97);
-      backdrop-filter: blur(12px);
-      position: sticky; top: 0; z-index: 200;
-      gap: 16px;
+      background: var(--orange);
+      border-bottom: 2px solid var(--black);
+      padding: 0 20px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      gap: 12px;
     }
-
-    .logo { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
-    .logo-svg { width: 20px; height: 24px; flex-shrink: 0; }
-    .wordmark {
-      font-weight: 700; font-size: 13px;
-      letter-spacing: .18em; white-space: nowrap;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--display);
+      font-size: 22px;
+      letter-spacing: .06em;
+      color: var(--black);
+      flex-shrink: 0;
     }
-    .wordmark b { color: var(--accent); }
-
-    .header-spacer { flex: 1; }
-
-    .header-nav {
-      display: flex; align-items: center; gap: 4px;
-      font-size: 10px; letter-spacing: .13em;
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .nav-link {
-      color: var(--muted); padding: 6px 10px;
-      border-radius: var(--r);
-      transition: color .15s, background .15s;
-    }
-    .nav-link:hover { color: var(--text); background: var(--surface); }
+    .logo-icon img { display: block; }
 
-    .nav-gh {
-      display: flex; align-items: center; gap: 7px;
-      border: 1px solid var(--border2);
-      padding: 5px 12px; color: var(--muted);
-      transition: border-color .15s, color .15s;
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: var(--display);
+      font-size: 15px;
+      letter-spacing: .1em;
+      color: var(--black);
+      border-bottom: 2px solid transparent;
+      padding-bottom: 2px;
+      transition: border-color .15s;
       white-space: nowrap;
     }
-    .nav-gh:hover { border-color: var(--accent); color: var(--text); }
-    .nav-gh-stars {
-      background: var(--dim); color: var(--muted);
-      font-size: 9px; padding: 1px 6px;
+    .nav-links a:hover { border-color: var(--black); }
+
+    /* ── SOCIAL ICONS in nav ── */
+    .nav-socials {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 4px;
+      padding-left: 14px;
+      border-left: 1.5px solid rgba(0,0,0,.2);
+    }
+    .nav-social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background: var(--black);
+      color: var(--orange);
+      border: none;
+      cursor: pointer;
+      transition: background .12s;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    .nav-social-btn:hover { background: var(--orangeD); }
+    .nav-social-btn svg { display: block; }
+
+    /* ── WALLET BUTTON ── */
+    .wallet-btn {
+      background: var(--black);
+      border: none;
+      color: var(--orange);
+      font-family: var(--mono);
+      font-size: 10px;
       letter-spacing: .1em;
+      padding: 8px 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: 700;
+      transition: background .12s;
+      flex-shrink: 0;
     }
-    .nav-gh-stars.loaded { background: var(--accentD2); color: var(--accent); }
+    .wallet-btn:hover { background: var(--orangeD); }
+    .wallet-btn.connected {
+      background: #0a2a0a;
+      color: #4ade80;
+      border: 1.5px solid #4ade80;
+    }
+    .wallet-btn.connected:hover { background: #0d3a0d; }
 
-    /* Hamburger */
-    .hamburger {
-      display: none; flex-direction: column;
-      gap: 5px; background: none; border: none;
-      padding: 4px; cursor: pointer; margin-left: auto;
+    .menu-btn {
+      display: none;
+      background: none;
+      border: 2px solid var(--black);
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0;
+      flex-shrink: 0;
     }
-    .hamburger span {
-      display: block; width: 20px; height: 1.5px;
-      background: var(--muted); transition: all .2s;
+    .menu-btn span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--black);
     }
-    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-    /* Mobile nav */
-    .mobile-nav {
-      display: none; position: fixed;
-      top: var(--header-h); left: 0; right: 0;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 24px 16px;
-      flex-direction: column; gap: 0; z-index: 190;
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--orange);
+      z-index: 200;
+      flex-direction: column;
+      padding: 0;
     }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a {
-      padding: 11px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 11px; letter-spacing: .14em;
-      color: var(--muted); display: flex;
-      align-items: center; gap: 8px;
+    .mobile-menu.open { display: flex; }
+    .mobile-menu-head {
+      border-bottom: 2px solid var(--black);
+      padding: 0 20px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .mobile-nav a:last-child { border-bottom: none; }
-    .mobile-nav a:hover { color: var(--text); }
+    .mobile-menu-close {
+      background: none;
+      border: none;
+      font-size: 28px;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--black);
+      line-height: 1;
+    }
+    .mobile-menu-links { flex: 1; overflow-y: auto; }
+    .mobile-menu-links a {
+      display: block;
+      font-family: var(--display);
+      font-size: 28px;
+      letter-spacing: .08em;
+      color: var(--black);
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(0,0,0,.2);
+    }
+    .mobile-menu-links a:hover { background: var(--orangeD); }
+    .mobile-wallet-btn {
+      display: block;
+      margin: 20px 24px;
+      background: var(--black);
+      border: none;
+      color: var(--orange);
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: .1em;
+      padding: 14px 20px;
+      cursor: pointer;
+      font-weight: 700;
+      text-align: center;
+      width: calc(100% - 48px);
+    }
+    .mobile-wallet-btn.connected { background: #0a2a0a; color: #4ade80; }
+    .mobile-menu-footer {
+      border-top: 2px solid var(--black);
+      padding: 14px 24px;
+      font-size: 10px;
+      letter-spacing: .15em;
+      color: rgba(0,0,0,.45);
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
 
     /* ── HERO ── */
     .hero {
-      max-width: 1060px; margin: 0 auto;
-      padding: 72px 24px 56px;
+      background: var(--orange);
+      border-bottom: 3px solid var(--black);
+      padding: 60px 24px 50px;
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
     }
-
     .hero-eyebrow {
-      font-size: 9px; letter-spacing: .3em;
-      color: var(--muted); margin-bottom: 20px;
-      display: flex; align-items: center; gap: 12px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .22em;
+      color: rgba(0,0,0,.55);
+      margin-bottom: 12px;
     }
-    .hero-eyebrow::before {
-      content: ''; display: block;
-      width: 28px; height: 1px; background: var(--accent);
-    }
-
     .hero-title {
-      font-weight: 700;
-      font-size: clamp(50px, 9vw, 96px);
-      line-height: .88; letter-spacing: -.03em;
-      margin-bottom: 40px;
+      font-family: var(--display);
+      font-size: clamp(52px, 11vw, 120px);
+      line-height: .92;
+      color: var(--black);
+      letter-spacing: .02em;
+      margin-bottom: 28px;
     }
-    .hero-title .a { color: var(--accent); }
-    .hero-title .d { color: var(--dim); }
-
-    .hero-body {
-      display: grid;
-      grid-template-columns: 1fr 200px;
-      gap: 40px; align-items: start;
-    }
-
-    /* Install cmd */
-    .install-label {
-      font-size: 9px; letter-spacing: .22em;
-      color: var(--muted); margin-bottom: 8px;
-    }
-    .install-box {
-      display: flex; align-items: center; gap: 10px;
-      background: var(--surface); border: 1px solid var(--border2);
-      padding: 11px 14px; max-width: 420px;
-      cursor: pointer; transition: border-color .15s;
-    }
-    .install-box:hover { border-color: var(--accent); }
-    .install-prompt { color: var(--accent); font-weight: 700; user-select: none; }
-    .install-cmd { flex: 1; font-size: 12.5px; color: var(--text); }
-    .copy-btn {
-      background: none; border: none; padding: 2px 4px;
-      color: var(--muted); display: flex;
-      transition: color .15s;
-    }
-    .copy-btn:hover { color: var(--accent); }
-    .copy-btn.copied { color: var(--green); }
-
-    .hero-desc {
-      margin-top: 14px; font-size: 12px; color: var(--muted); line-height: 1.9;
-    }
-    .hero-desc .tags {
-      margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px;
-    }
-    .hero-desc .tag {
-      font-size: 9px; letter-spacing: .14em; padding: 2px 8px;
-      border: 1px solid var(--border2); color: var(--dim);
-    }
-
-    /* Stats */
-    .hero-stats {
-      display: flex; flex-direction: column; gap: 1px;
-      background: var(--border); border: 1px solid var(--border);
-    }
-    .stat { background: var(--bg); padding: 14px 18px; }
-    .stat-val {
-      font-size: 26px; font-weight: 700;
-      color: var(--accent); letter-spacing: -.04em; line-height: 1;
-    }
-    .stat-lbl { font-size: 9px; letter-spacing: .16em; color: var(--muted); margin-top: 3px; }
-
-    /* GitHub Activity Bar */
-    .gh-activity {
-      max-width: 1060px; margin: 0 auto;
-      padding: 0 24px 48px;
-    }
-    .gh-act-head {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 9px; letter-spacing: .2em; color: var(--muted);
+    .hero-cmd-label {
+      font-size: 10px;
+      letter-spacing: .2em;
+      color: rgba(0,0,0,.5);
       margin-bottom: 10px;
     }
-    .gh-act-head a {
-      color: var(--accent); display: flex; align-items: center; gap: 5px;
-      transition: opacity .15s;
+    .hero-cmd {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      max-width: 420px;
+      width: 100%;
+      border: none;
+      cursor: pointer;
     }
-    .gh-act-head a:hover { opacity: .75; }
-    .gh-commits {
-      display: flex; gap: 1px; background: var(--border);
-      border: 1px solid var(--border); overflow: hidden;
+    .hero-cmd .prompt { color: var(--orange); font-weight: 700; font-size: 14px; }
+    .hero-cmd .cmd-text { flex: 1; text-align: left; }
+    .hero-cmd .copy-icon { opacity: .5; transition: opacity .15s; flex-shrink: 0; }
+    .hero-cmd:hover .copy-icon { opacity: 1; }
+    .hero-desc {
+      margin-top: 22px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(0,0,0,.6);
+      line-height: 1.9;
+      max-width: 480px;
     }
-    .gh-commit {
-      flex: 1; padding: 11px 14px; background: var(--bg);
-      display: flex; flex-direction: column; gap: 3px;
-      transition: background .15s; min-width: 0;
-    }
-    .gh-commit:hover { background: var(--surface); }
-    .gh-commit-msg {
-      font-size: 11px; color: var(--text);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .gh-commit-meta {
-      font-size: 9px; letter-spacing: .08em; color: var(--muted);
-      display: flex; gap: 8px; align-items: center;
-    }
-    .gh-commit-sha {
-      color: var(--accent); font-family: var(--mono);
-    }
-    .gh-commit-loading {
-      padding: 20px; text-align: center;
-      font-size: 10px; letter-spacing: .16em; color: var(--muted);
-      background: var(--bg); flex: 1;
+    .hero-bg-art {
+      position: absolute;
+      right: -40px;
+      bottom: -20px;
+      width: 340px;
+      height: 340px;
+      opacity: .12;
+      pointer-events: none;
+      font-family: var(--display);
+      font-size: 360px;
+      line-height: 1;
+      color: var(--black);
+      user-select: none;
     }
 
     /* ── MARQUEE ── */
     .marquee-wrap {
+      background: var(--black);
+      border-top: 2px solid var(--black);
+      border-bottom: 2px solid var(--black);
       overflow: hidden;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: var(--surface); padding: 9px 0;
+      height: 34px;
+      display: flex;
+      align-items: center;
     }
     .marquee-track {
-      display: flex; white-space: nowrap;
-      animation: mq 36s linear infinite;
-    }
-    .marquee-wrap.rev .marquee-track { animation-direction: reverse; animation-duration: 44s; }
-    .mi { font-size: 10px; letter-spacing: .15em; color: var(--muted); }
-    .ms { color: var(--accent); margin: 0 14px; }
-    @keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-    /* ── SKILLS ── */
-    .skills-section { max-width: 1060px; margin: 0 auto; padding: 52px 24px 64px; }
-
-    .section-head {
-      display: flex; align-items: center;
-      justify-content: space-between; margin-bottom: 14px;
-      gap: 12px; flex-wrap: wrap;
-    }
-    .section-lbl { font-size: 9px; letter-spacing: .26em; color: var(--muted); }
-    .section-count { font-size: 10px; color: var(--dim); letter-spacing: .1em; }
-    .section-gh-link {
-      font-size: 9px; letter-spacing: .14em; color: var(--muted);
-      display: flex; align-items: center; gap: 5px;
-      border: 1px solid var(--border2); padding: 4px 10px;
-      transition: color .15s, border-color .15s;
-    }
-    .section-gh-link:hover { color: var(--text); border-color: var(--text); }
-
-    /* Search */
-    .search-wrap {
-      display: flex; gap: 1px;
-      background: var(--border); margin-bottom: 1px;
-    }
-    .search-box {
-      flex: 1; display: flex; align-items: center; gap: 10px;
-      background: var(--surface); padding: 10px 14px;
-    }
-    .search-box svg { color: var(--muted); flex-shrink: 0; }
-    .search-input {
-      flex: 1; background: none; border: none; outline: none;
-      color: var(--text); font-family: var(--mono);
-      font-size: 12px; letter-spacing: .04em;
-    }
-    .search-input::placeholder { color: var(--dim); }
-    .clear-btn {
-      background: var(--surface); border: none;
-      padding: 10px 14px; color: var(--muted);
-      font-size: 10px; letter-spacing: .1em;
-      transition: color .15s; display: none;
-    }
-    .clear-btn.visible { display: block; }
-    .clear-btn:hover { color: var(--accent); }
-
-    /* Tag filters */
-    .tag-filters {
-      display: flex; flex-wrap: wrap; gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border); margin-bottom: 16px;
-    }
-    .tag-pill {
-      font-size: 10px; letter-spacing: .1em; padding: 7px 13px;
-      background: var(--surface); border: none;
-      color: var(--muted); cursor: pointer; transition: all .15s;
+      display: flex;
       white-space: nowrap;
+      animation: marquee 28s linear infinite;
     }
-    .tag-pill:hover { background: var(--surface2); color: var(--text); }
-    .tag-pill.active { background: var(--accentD2); color: var(--accent); }
+    .marquee-item {
+      font-family: var(--display);
+      font-size: 13px;
+      letter-spacing: .18em;
+      color: var(--orange);
+      padding: 0 20px;
+    }
+    .marquee-sep { color: rgba(232,93,4,.35); margin: 0 4px; }
+    @keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
 
-    /* Grid */
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background: var(--orange);
+      border-bottom: 2px solid var(--black);
+      padding: 12px 20px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-lbl {
+      font-size: 9px;
+      letter-spacing: .2em;
+      color: rgba(0,0,0,.45);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .filter-tag {
+      background: transparent;
+      border: 1.5px solid var(--black);
+      color: var(--black);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .1em;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: background .12s, color .12s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .filter-tag:hover, .filter-tag.active {
+      background: var(--black);
+      color: var(--orange);
+    }
+    .search-wrap {
+      margin-left: auto;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .search-input {
+      background: var(--black);
+      border: none;
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 7px 32px 7px 12px;
+      width: 160px;
+      outline: none;
+    }
+    .search-input::placeholder { color: rgba(245,240,232,.3); }
+    .search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(245,240,232,.4);
+      pointer-events: none;
+    }
+
+    /* ── GRID ── */
+    main {
+      padding: 24px 20px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .grid-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 12px;
+    }
+    .grid-count {
+      font-family: var(--display);
+      font-size: 26px;
+      letter-spacing: .05em;
+      color: var(--black);
+    }
+    .grid-count span { font-size: 12px; font-family: var(--mono); color: rgba(0,0,0,.45); margin-left: 6px; letter-spacing: .1em; }
+    .sort-select {
+      background: transparent;
+      border: 1.5px solid var(--black);
+      color: var(--black);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .1em;
+      padding: 6px 10px;
+      cursor: pointer;
+      outline: none;
+      flex-shrink: 0;
+    }
+    .sort-select option { background: var(--orange); }
+
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(308px, 1fr));
-      gap: 1px; background: var(--border);
-      border: 1px solid var(--border);
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 3px;
     }
+
     .skill-card {
-      background: var(--bg);
-      display: flex; flex-direction: column;
-      position: relative; overflow: hidden;
-      transition: background .15s; cursor: pointer;
+      background: var(--orange);
+      border: 2px solid var(--black);
+      padding: 18px;
+      cursor: pointer;
+      transition: background .12s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .skill-card:hover { background: var(--surface); }
-    .skill-rail {
-      height: 2px; background: var(--accent);
-      transform: scaleX(0); transform-origin: left;
-      transition: transform .22s ease;
+    .skill-card:hover {
+      background: var(--black);
+      color: var(--orange);
     }
-    .skill-card:hover .skill-rail { transform: scaleX(1); }
+    .skill-card:hover .card-tag { border-color: rgba(232,93,4,.4); color: rgba(232,93,4,.7); }
+    .skill-card:hover .card-price { color: var(--orangeL); }
+    .skill-card:hover .card-stat { color: rgba(232,93,4,.5); }
+    .skill-card:hover .card-desc { color: rgba(232,93,4,.75); }
+    .skill-card:hover .badge-new { background: var(--orange); color: var(--black); }
+    .skill-card:hover .badge-free { background: var(--orangeL); color: var(--black); }
+    .skill-card:hover .badge-pin { background: var(--orange); color: var(--black); }
 
-    .skill-inner { padding: 18px 16px 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-    .skill-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-    .skill-name { font-weight: 700; font-size: 13px; letter-spacing: .06em; }
-    .skill-org { font-size: 10px; color: var(--muted); margin-top: 2px; }
-    .skill-org a { color: var(--muted); transition: color .15s; }
-    .skill-org a:hover { color: var(--accent); }
-    .view-btn {
-      font-size: 9px; letter-spacing: .12em; color: var(--accent);
-      white-space: nowrap; opacity: 0; transition: opacity .15s;
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
     }
-    .skill-card:hover .view-btn { opacity: 1; }
-
-    .skill-desc { font-size: 11.5px; color: var(--muted); line-height: 1.65; flex: 1; }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
-    .skill-tag {
-      font-size: 9px; letter-spacing: .1em; padding: 2px 7px;
-      border: 1px solid var(--border2); color: var(--dim);
+    .card-name {
+      font-family: var(--display);
+      font-size: 20px;
+      letter-spacing: .05em;
+      line-height: 1;
     }
-
-    .skill-foot {
-      display: flex; justify-content: space-between; align-items: center;
-      border-top: 1px solid var(--border);
-      padding: 9px 16px; gap: 8px;
-    }
-    .badges { display: flex; gap: 4px; }
-    .badge {
-      font-size: 9px; letter-spacing: .12em;
-      padding: 2px 7px; border: 1px solid var(--border2); color: var(--muted);
-    }
-    .badge.free { border-color: var(--accent); color: var(--accent); background: var(--accentD); }
-    .badge.new-b { border-color: var(--green); color: var(--green); background: rgba(74,222,128,.06); }
-    .badge.pinned { border-color: #facc15; color: #facc15; background: rgba(250,204,21,.06); }
-
-    .skill-price { font-weight: 700; font-size: 14px; letter-spacing: -.01em; }
-
-    .skill-meta { display: flex; gap: 10px; font-size: 9px; color: var(--dim); padding: 0 16px 10px; }
-    .skill-meta span { display: flex; align-items: center; gap: 3px; }
-
-    .empty-state {
-      grid-column: 1 / -1; padding: 60px 24px; text-align: center;
-      background: var(--bg);
-    }
-    .empty-title { font-size: 11px; letter-spacing: .2em; color: var(--dim); margin-bottom: 8px; }
-    .empty-sub { font-size: 11px; color: var(--muted); }
-
-    /* ── HOW IT WORKS ── */
-    .how-section {
-      border-top: 1px solid var(--border);
-      background: var(--surface); padding: 64px 24px;
-    }
-    .how-inner { max-width: 1060px; margin: 0 auto; }
-
-    .how-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 48px; align-items: start; margin-top: 36px;
-    }
-    @media(max-width:700px) { .how-grid { grid-template-columns: 1fr; } }
-
-    /* Code block */
-    .code-card { border: 1px solid var(--border2); }
-    .code-chrome {
-      display: flex; align-items: center; gap: 8px;
-      padding: 8px 14px; border-bottom: 1px solid var(--border);
-      background: var(--surface2);
-    }
-    .chrome-dots { display: flex; gap: 5px; }
-    .chrome-dots span { width: 8px; height: 8px; border-radius: 50%; display: block; }
-    .chrome-dots span:nth-child(1) { background: #ff5f57; }
-    .chrome-dots span:nth-child(2) { background: #febc2e; }
-    .chrome-dots span:nth-child(3) { background: #28c840; }
-    .chrome-fname { font-size: 10px; letter-spacing: .12em; color: var(--muted); margin-left: 4px; }
-    .chrome-gh {
-      margin-left: auto; font-size: 9px; color: var(--muted);
-      display: flex; align-items: center; gap: 5px;
-      transition: color .15s;
-    }
-    .chrome-gh:hover { color: var(--accent); }
-    .code-body { padding: 18px 16px; font-size: 12px; line-height: 1.95; overflow-x: auto; background: var(--bg); }
-    .sy-sep { color: var(--muted); }
-    .sy-key { color: var(--blue); }
-    .sy-col { color: var(--muted); }
-    .sy-str { color: #86efac; }
-    .sy-num { color: var(--orange); }
-    .sy-dash { color: var(--muted); }
-    .sy-tag { color: var(--purple); }
-    .sy-cmt { color: var(--dim); font-style: italic; }
-    .code-note {
-      padding: 10px 16px; border-top: 1px solid var(--border);
-      font-size: 11px; color: var(--dim); line-height: 1.65;
-      background: var(--surface2);
-    }
-
-    /* Steps */
-    .steps { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
-    .step {
-      display: flex; gap: 20px; padding: 20px 22px;
-      background: var(--bg); transition: background .15s; align-items: flex-start;
-    }
-    .step:hover { background: var(--surface2); }
-    .step-n { font-size: 28px; font-weight: 700; color: var(--accent); letter-spacing: -.03em; line-height: 1; min-width: 38px; }
-    .step-lbl { font-size: 10px; letter-spacing: .15em; font-weight: 700; margin-bottom: 5px; }
-    .step p { font-size: 11.5px; color: var(--muted); line-height: 1.75; }
-    .step a { color: var(--accent); transition: opacity .15s; }
-    .step a:hover { opacity: .75; }
-
-    /* ── SELL YOUR SKILL CTA ── */
-    .sell-cta {
-      max-width: 1060px; margin: 0 auto;
-      padding: 48px 24px 64px;
-    }
-    .cta-box {
-      border: 1px solid var(--border2);
-      background: var(--surface);
-      padding: 36px 32px;
-      display: flex; gap: 32px; align-items: center;
+    .card-badges {
+      display: flex;
+      gap: 4px;
       flex-wrap: wrap;
+      justify-content: flex-end;
+      flex-shrink: 0;
     }
-    .cta-text { flex: 1; min-width: 240px; }
-    .cta-eyebrow { font-size: 9px; letter-spacing: .24em; color: var(--accent); margin-bottom: 10px; }
-    .cta-title { font-size: 22px; font-weight: 700; letter-spacing: .02em; line-height: 1.2; margin-bottom: 10px; }
-    .cta-desc { font-size: 12px; color: var(--muted); line-height: 1.8; }
-    .cta-actions { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
-    .btn-primary {
-      display: flex; align-items: center; gap: 8px;
-      padding: 12px 22px; background: var(--accent); border: none;
-      color: #000; font-weight: 700; font-size: 11px; letter-spacing: .14em;
-      cursor: pointer; transition: opacity .15s; white-space: nowrap;
-      text-decoration: none;
+    .badge {
+      font-size: 8px;
+      letter-spacing: .12em;
+      padding: 3px 6px;
+      font-weight: 700;
     }
-    .btn-primary:hover { opacity: .88; }
-    .btn-outline {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 22px; background: none;
-      border: 1px solid var(--border2); color: var(--muted);
-      font-size: 10px; letter-spacing: .12em; cursor: pointer;
-      transition: all .15s; white-space: nowrap;
-      text-decoration: none;
-    }
-    .btn-outline:hover { border-color: var(--text); color: var(--text); }
+    .badge-new { background: var(--black); color: var(--orange); }
+    .badge-free { background: var(--orangeD); color: var(--white); }
+    .badge-pin { background: var(--black); color: var(--orange); }
 
-    /* ── x402 PROTOCOL ── */
-    .x402-section {
-      border-top: 1px solid var(--border);
-      padding: 64px 24px;
+    .card-desc {
+      font-size: 11px;
+      color: rgba(0,0,0,.6);
+      line-height: 1.75;
+      flex: 1;
     }
-    .x402-inner { max-width: 1060px; margin: 0 auto; }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .card-tag {
+      font-size: 9px;
+      letter-spacing: .1em;
+      border: 1px solid rgba(0,0,0,.3);
+      color: rgba(0,0,0,.55);
+      padding: 2px 6px;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid rgba(0,0,0,.15);
+    }
+    .card-price {
+      font-family: var(--display);
+      font-size: 20px;
+      letter-spacing: .04em;
+    }
+    .card-price-free { font-size: 13px; font-family: var(--mono); font-weight: 700; letter-spacing: .08em; }
+    .card-stats {
+      display: flex;
+      gap: 10px;
+    }
+    .card-stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      color: rgba(0,0,0,.45);
+      letter-spacing: .06em;
+    }
+    .card-stat svg { opacity: .5; }
 
-    .x402-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 40px; margin-top: 32px; align-items: start;
-    }
-    @media(max-width:700px) { .x402-grid { grid-template-columns: 1fr; } }
-
-    .x402-explain { display: flex; flex-direction: column; gap: 20px; }
-    .x402-step {
-      display: flex; gap: 16px; align-items: flex-start;
-      padding: 16px; background: var(--surface); border: 1px solid var(--border);
-    }
-    .x402-arrow {
-      color: var(--accent); font-size: 16px; font-weight: 700;
-      line-height: 1; min-width: 20px; margin-top: 1px;
-    }
-    .x402-step-lbl { font-size: 11px; font-weight: 700; letter-spacing: .08em; margin-bottom: 4px; }
-    .x402-step-txt { font-size: 11px; color: var(--muted); line-height: 1.7; }
-
-    /* Terminal demo */
-    .terminal {
-      background: var(--bg); border: 1px solid var(--border2);
-    }
-    .term-bar {
-      display: flex; align-items: center; gap: 8px;
-      padding: 8px 14px; border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }
-    .term-dots { display: flex; gap: 5px; }
-    .term-dots span { width: 8px; height: 8px; border-radius: 50%; display: block; }
-    .term-dots span:nth-child(1) { background: #ff5f57; }
-    .term-dots span:nth-child(2) { background: #febc2e; }
-    .term-dots span:nth-child(3) { background: #28c840; }
-    .term-title { font-size: 10px; letter-spacing: .1em; color: var(--muted); }
-
-    .term-body { padding: 16px 16px; font-size: 11.5px; line-height: 1.9; min-height: 280px; }
-    .term-line { display: flex; gap: 8px; align-items: baseline; }
-    .term-prompt { color: var(--accent); font-weight: 700; }
-    .term-cmd { color: var(--text); }
-    .term-out { color: var(--muted); padding-left: 4px; }
-    .term-out.ok { color: var(--green); }
-    .term-out.info { color: var(--blue); }
-    .term-out.warn { color: var(--orange); }
-    .term-cursor {
-      display: inline-block; width: 7px; height: 14px;
-      background: var(--accent); vertical-align: middle;
-      animation: blink-c .9s step-end infinite; margin-left: 2px;
-    }
-    @keyframes blink-c { 0%,100%{opacity:1} 50%{opacity:0} }
-
-    .term-btn-row { display: flex; gap: 1px; background: var(--border); border-top: 1px solid var(--border); }
-    .term-btn {
-      flex: 1; padding: 9px; background: var(--surface);
-      border: none; color: var(--muted); font-size: 10px; letter-spacing: .1em;
-      cursor: pointer; transition: all .15s;
-    }
-    .term-btn:hover { background: var(--surface2); color: var(--accent); }
-    .term-btn.active { background: var(--accentD2); color: var(--accent); }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border); margin-top: auto;
-      padding: 20px 24px;
-    }
-    .footer-inner {
-      max-width: 1060px; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 14px;
-      font-size: 9px; letter-spacing: .16em; color: var(--muted);
-    }
-    .footer-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
-    .footer-links a { display: flex; align-items: center; gap: 5px; transition: color .15s; }
-    .footer-links a:hover { color: var(--text); }
-    .footer-badge {
-      display: flex; align-items: center; gap: 6px;
-      border: 1px solid var(--border2); padding: 5px 12px;
-      transition: all .15s;
-    }
-    .footer-badge:hover { border-color: var(--accent); color: var(--text); }
-
-    /* ── MODAL ── */
+    /* ── SKILL MODAL ── */
     .modal-backdrop {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,.75); z-index: 300;
-      backdrop-filter: blur(4px);
-      align-items: flex-start; justify-content: flex-end;
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      z-index: 300;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
     }
     .modal-backdrop.open { display: flex; }
     .modal-panel {
-      width: 100%; max-width: 540px; height: 100vh;
-      background: var(--surface); border-left: 1px solid var(--border);
-      display: flex; flex-direction: column;
+      background: var(--orange);
+      border: 3px solid var(--black);
+      border-bottom: none;
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
       overflow-y: auto;
-      animation: slideIn .2s ease;
+      animation: slideUp .22s ease;
     }
-    @keyframes slideIn { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes slideUp { from { transform: translateY(60px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
 
+    .modal-hazard {
+      height: 10px;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--black) 0px,
+        var(--black) 7px,
+        var(--orange) 7px,
+        var(--orange) 14px
+      );
+    }
     .modal-head {
-      padding: 18px 22px; border-bottom: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: flex-start;
-      position: sticky; top: 0; background: var(--surface); z-index: 1;
+      border-bottom: 2px solid var(--black);
+      padding: 16px 18px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .modal-name {
+      font-family: var(--display);
+      font-size: 30px;
+      letter-spacing: .05em;
+      line-height: 1;
+      color: var(--black);
+    }
+    .modal-org {
+      font-size: 10px;
+      letter-spacing: .12em;
+      color: rgba(0,0,0,.5);
+      margin-top: 5px;
     }
     .modal-close {
-      background: none; border: none; color: var(--muted);
-      font-size: 18px; line-height: 1; padding: 2px 6px;
-      transition: color .15s;
+      background: var(--black);
+      border: none;
+      color: var(--orange);
+      font-size: 20px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: 900;
     }
-    .modal-close:hover { color: var(--text); }
-    .modal-name { font-weight: 700; font-size: 15px; letter-spacing: .08em; }
-    .modal-org { font-size: 10px; color: var(--muted); margin-top: 3px; }
-    .modal-org a { color: var(--accent); }
+    .modal-close:hover { background: var(--orangeD); }
+    .modal-body { padding: 18px; display: flex; flex-direction: column; gap: 18px; }
 
-    .modal-body { padding: 22px; display: flex; flex-direction: column; gap: 22px; }
-
-    .modal-sec-lbl { font-size: 9px; letter-spacing: .2em; color: var(--muted); margin-bottom: 8px; }
-    .modal-desc { font-size: 12px; color: var(--muted); line-height: 1.8; }
-
+    .modal-sec-lbl {
+      font-size: 9px;
+      letter-spacing: .2em;
+      color: rgba(0,0,0,.45);
+      margin-bottom: 8px;
+    }
+    .modal-desc {
+      font-size: 12px;
+      color: rgba(0,0,0,.7);
+      line-height: 1.85;
+    }
     .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .modal-tag {
-      font-size: 10px; letter-spacing: .1em; padding: 3px 10px;
-      border: 1px solid var(--border2); color: var(--dim);
+      font-size: 9px;
+      letter-spacing: .1em;
+      border: 1.5px solid var(--black);
+      color: var(--black);
+      padding: 3px 9px;
     }
-
     .modal-stats {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1px; background: var(--border); border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
     }
-    .modal-stat { background: var(--bg); padding: 13px 15px; }
-    .modal-stat-val { font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: -.02em; }
-    .modal-stat-lbl { font-size: 9px; color: var(--muted); letter-spacing: .1em; margin-top: 2px; }
-
+    .modal-stat {
+      background: var(--black);
+      padding: 12px 14px;
+    }
+    .modal-stat-val {
+      font-family: var(--display);
+      font-size: 24px;
+      color: var(--orange);
+      letter-spacing: .03em;
+      line-height: 1;
+    }
+    .modal-stat-lbl {
+      font-size: 9px;
+      color: rgba(232,93,4,.5);
+      letter-spacing: .12em;
+      margin-top: 4px;
+    }
     .modal-price-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 16px; background: var(--bg); border: 1px solid var(--border);
+      border: 2.5px solid var(--black);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
     }
-    .modal-price { font-size: 26px; font-weight: 700; letter-spacing: -.03em; }
-    .modal-price-lbl { font-size: 10px; color: var(--muted); letter-spacing: .1em; margin-top: 2px; }
-
-    .modal-skillmd { background: var(--bg); border: 1px solid var(--border); }
-    .modal-skillmd pre { padding: 14px 16px; font-size: 11px; line-height: 1.9; overflow-x: auto; }
-    .skillmd-foot {
-      padding: 10px 16px; border-top: 1px solid var(--border);
-      font-size: 9px; color: var(--muted); letter-spacing: .1em;
-      display: flex; justify-content: space-between; align-items: center;
+    .modal-price-val {
+      font-family: var(--display);
+      font-size: 36px;
+      letter-spacing: .03em;
+      color: var(--black);
     }
-    .skillmd-foot a { color: var(--accent); display: flex; align-items: center; gap: 4px; }
-    .skillmd-foot a:hover { opacity: .75; }
-
-    .modal-actions { display: flex; flex-direction: column; gap: 8px; }
-
-    .btn-buy {
-      width: 100%; padding: 13px;
-      background: var(--accent); border: none;
-      color: #000; font-weight: 700;
-      font-size: 11px; letter-spacing: .16em;
-      cursor: pointer; transition: opacity .15s;
+    .modal-price-meta { text-align: right; }
+    .modal-price-lbl {
+      font-size: 9px;
+      letter-spacing: .15em;
+      color: rgba(0,0,0,.45);
     }
-    .btn-buy:hover { opacity: .88; }
-    .btn-buy:disabled { opacity: .4; cursor: not-allowed; }
-
-    .btn-gh-view {
-      width: 100%; padding: 11px;
-      background: none; border: 1px solid var(--border2);
-      color: var(--muted); font-size: 10px; letter-spacing: .13em;
-      cursor: pointer; transition: all .15s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+    .modal-price-network {
+      font-size: 10px;
+      letter-spacing: .1em;
+      color: var(--black);
+      font-weight: 700;
+      margin-top: 4px;
     }
-    .btn-gh-view:hover { border-color: var(--text); color: var(--text); }
 
-    .pay-row { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px; }
-    .pay-badge {
-      font-size: 9px; letter-spacing: .12em; padding: 3px 8px;
-      border: 1px solid var(--border2); color: var(--muted);
+    .btn-primary {
+      background: var(--black);
+      border: none;
+      color: var(--orange);
+      font-family: var(--display);
+      font-size: 17px;
+      letter-spacing: .1em;
+      padding: 15px 20px;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background .12s;
     }
-    .pay-badge.x402 { border-color: var(--blue); color: var(--blue); background: rgba(125,211,252,.05); }
+    .btn-primary:hover { background: var(--orangeD); color: var(--white); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--black);
+      color: var(--black);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      padding: 11px 20px;
+      width: 100%;
+      cursor: pointer;
+      text-align: center;
+      transition: background .12s;
+      display: block;
+    }
+    .btn-secondary:hover { background: var(--black); color: var(--orange); }
 
-    /* Section headings shared */
-    .sec-eyebrow { font-size: 9px; letter-spacing: .28em; color: var(--accent); margin-bottom: 8px; }
-    .sec-title { font-size: clamp(22px, 4vw, 36px); font-weight: 700; letter-spacing: .01em; line-height: 1.1; }
-    .sec-sub { font-size: 12px; color: var(--muted); line-height: 1.85; max-width: 480px; margin-top: 10px; }
+    /* ── PAY MODAL ── */
+    .pay-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.88);
+      z-index: 400;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .pay-modal-backdrop.open { display: flex; }
+    .pay-modal {
+      background: var(--black);
+      border: 3px solid var(--orange);
+      width: 100%;
+      max-width: 440px;
+      max-height: 92vh;
+      overflow-y: auto;
+      animation: slideUp .2s ease;
+    }
+    .pay-modal-hazard {
+      height: 10px;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--orange) 0px,
+        var(--orange) 7px,
+        var(--black) 7px,
+        var(--black) 14px
+      );
+    }
+    .pay-modal-head {
+      border-bottom: 2px solid var(--orange);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pay-modal-title {
+      font-family: var(--display);
+      font-size: 24px;
+      letter-spacing: .06em;
+      color: var(--orange);
+    }
+    .pay-modal-close {
+      background: var(--orange);
+      border: none;
+      color: var(--black);
+      font-size: 18px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .pay-modal-body { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
 
-    /* Fade in */
-    .fade { opacity: 0; transform: translateY(16px); transition: opacity .45s ease, transform .45s ease; }
-    .fade.in { opacity: 1; transform: none; }
+    .pay-skill-name {
+      font-family: var(--display);
+      font-size: 16px;
+      letter-spacing: .08em;
+      color: var(--orange);
+      opacity: .7;
+    }
+    .pay-amount-row {
+      background: var(--orange);
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .pay-amount {
+      font-family: var(--display);
+      font-size: 36px;
+      color: var(--black);
+      letter-spacing: .03em;
+    }
+    .pay-amount-meta { text-align: right; }
+    .pay-network-badge {
+      font-size: 10px;
+      letter-spacing: .1em;
+      font-weight: 700;
+      color: var(--black);
+    }
+    .pay-currency { font-size: 9px; color: rgba(0,0,0,.5); letter-spacing: .12em; margin-top: 3px; }
 
-    /* ── RESPONSIVE ── */
-    @media(max-width:768px) {
-      .header-nav { display: none; }
-      .hamburger { display: flex; }
-      .hero-title { font-size: 50px; }
-      .hero-body { grid-template-columns: 1fr; }
-      .hero-stats { flex-direction: row; }
+    /* MetaMask pay button */
+    .metamask-btn {
+      background: var(--orange);
+      border: none;
+      color: var(--black);
+      font-family: var(--display);
+      font-size: 19px;
+      letter-spacing: .08em;
+      padding: 16px 20px;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background .12s;
+    }
+    .metamask-btn:hover { background: var(--orangeL); }
+    .metamask-btn:disabled { opacity: .55; cursor: not-allowed; }
+
+    .pay-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(232,93,4,.3);
+      font-size: 9px;
+      letter-spacing: .2em;
+    }
+    .pay-divider::before, .pay-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(232,93,4,.2);
+    }
+
+    .pay-lbl { font-size: 9px; letter-spacing: .2em; color: rgba(232,93,4,.55); margin-bottom: 6px; }
+    .pay-addr-box {
+      background: rgba(232,93,4,.08);
+      border: 1.5px solid rgba(232,93,4,.3);
+      padding: 12px 14px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--orange);
+      word-break: break-all;
+      line-height: 1.7;
+    }
+    .pay-copy-btn {
+      display: block;
+      background: rgba(232,93,4,.15);
+      border: 1px solid rgba(232,93,4,.3);
+      color: var(--orange);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .1em;
+      padding: 9px 14px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: 700;
+      margin-top: 2px;
+      width: 100%;
+      transition: background .12s;
+    }
+    .pay-copy-btn:hover { background: rgba(232,93,4,.25); }
+
+    .pay-note {
+      font-size: 10px;
+      color: rgba(232,93,4,.5);
+      line-height: 1.8;
+      padding: 12px 14px;
+      border: 1px solid rgba(232,93,4,.15);
+    }
+    .pay-note code { color: var(--orange); font-size: 10px; }
+    .pay-github-btn {
+      background: transparent;
+      border: 2px solid rgba(232,93,4,.4);
+      color: rgba(232,93,4,.7);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      padding: 10px 20px;
+      width: 100%;
+      cursor: pointer;
+      text-align: center;
+      display: block;
+      transition: background .12s, color .12s, border-color .12s;
+    }
+    .pay-github-btn:hover { background: rgba(232,93,4,.1); color: var(--orange); border-color: var(--orange); }
+
+    /* Pay success */
+    .pay-success-icon {
+      text-align: center;
+      padding: 20px 0 8px;
+    }
+    .pay-success-icon svg { animation: popIn .3s ease; }
+    @keyframes popIn { from { transform: scale(.5); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+
+    /* ── HOW IT WORKS ── */
+    .how-section {
+      background: var(--black);
+      border-top: 3px solid var(--black);
+      border-bottom: 3px solid var(--black);
+      padding: 56px 24px;
+    }
+    .how-inner { max-width: 900px; margin: 0 auto; }
+    .section-eyebrow {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .25em;
+      color: rgba(232,93,4,.55);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--display);
+      font-size: clamp(38px, 8vw, 80px);
+      color: var(--orange);
+      line-height: .92;
+      margin-bottom: 36px;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2px;
+    }
+    .how-card {
+      background: rgba(232,93,4,.06);
+      border: 1.5px solid rgba(232,93,4,.15);
+      padding: 22px 18px;
+    }
+    .how-num {
+      font-family: var(--display);
+      font-size: 46px;
+      color: rgba(232,93,4,.2);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .how-card-title {
+      font-family: var(--display);
+      font-size: 19px;
+      color: var(--orange);
+      letter-spacing: .06em;
+      margin-bottom: 8px;
+    }
+    .how-card-txt {
+      font-size: 11px;
+      color: rgba(232,93,4,.6);
+      line-height: 1.8;
+    }
+
+    /* ── SELL SECTION ── */
+    .sell-section {
+      background: var(--orange);
+      border-bottom: 3px solid var(--black);
+      padding: 56px 24px;
+    }
+    .sell-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .sell-title {
+      font-family: var(--display);
+      font-size: clamp(40px, 7vw, 78px);
+      color: var(--black);
+      line-height: .92;
+      margin-bottom: 18px;
+    }
+    .sell-body {
+      font-size: 12px;
+      color: rgba(0,0,0,.6);
+      line-height: 1.85;
+      margin-bottom: 22px;
+    }
+    .sell-code {
+      background: var(--black);
+      padding: 16px 18px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--orange);
+      line-height: 2;
+      overflow-x: auto;
+    }
+    .sc-k { color: rgba(232,93,4,.55); }
+    .sc-v { color: #f5f0e8; }
+    .sc-s { color: #f7882a; }
+    .sc-c { color: rgba(245,240,232,.3); font-style: italic; }
+
+    /* ── FOOTER (see FOOTER REDESIGN above) ── */
+
+    /* ── FOOTER REDESIGN ── */
+    footer {
+      background: var(--black);
+      border-top: 3px solid var(--black);
+      padding: 28px 24px 24px;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .footer-logo {
+      font-family: var(--display);
+      font-size: 20px;
+      color: var(--orange);
+      letter-spacing: .1em;
+    }
+    .footer-tagline {
+      font-size: 9px;
+      letter-spacing: .18em;
+      color: rgba(232,93,4,.4);
+    }
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-links {
+      display: flex;
+      gap: 14px;
+      font-size: 9px;
+      letter-spacing: .15em;
+      color: rgba(232,93,4,.4);
+    }
+    .footer-links a {
+      color: rgba(232,93,4,.45);
+      transition: color .12s;
+    }
+    .footer-links a:hover { color: var(--orange); }
+    .footer-socials {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .footer-social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid rgba(232,93,4,.3);
+      color: rgba(232,93,4,.6);
+      transition: border-color .12s, color .12s, background .12s;
+      text-decoration: none;
+    }
+    .footer-social-btn:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+      background: rgba(232,93,4,.08);
+    }
+    .footer-social-btn svg { display: block; }
+    @media (max-width: 480px) {
+      footer { padding: 22px 16px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .footer-right { gap: 14px; }
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--black);
+      border: 2px solid var(--orange);
+      color: var(--orange);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      padding: 12px 20px;
+      z-index: 999;
+      transition: transform .25s ease;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── RESPONSIVE: TABLET (≤900px) ── */
+    @media (max-width: 900px) {
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 13px; }
+      .wallet-btn { font-size: 9px; padding: 7px 11px; }
+    }
+
+    /* ── RESPONSIVE: MOBILE (≤768px) ── */
+    @media (max-width: 768px) {
+      header { padding: 0 16px; gap: 8px; }
+      .nav-links { display: none; }
+      .wallet-btn { display: none; }
+      .menu-btn { display: flex; }
+
+      .hero { padding: 36px 18px 36px; min-height: 320px; }
+      .hero-title { font-size: clamp(44px, 14vw, 76px); }
+      .hero-bg-art { font-size: 180px; right: -15px; bottom: 0; width: 200px; }
+      .hero-cmd { font-size: 12px; padding: 12px 14px; }
+      .hero-desc { font-size: 11px; }
+
+      .filter-bar { padding: 10px 16px; }
+      .search-wrap { margin-left: 0; flex-shrink: 0; }
+      .search-input { width: 120px; }
+
+      main { padding: 18px 14px 48px; }
       .skills-grid { grid-template-columns: 1fr; }
-      .modal-panel { max-width: 100%; }
-      .cta-box { flex-direction: column; }
-      .gh-commits { flex-direction: column; }
-      .gh-commit { flex-direction: row; gap: 12px; }
+      .grid-header { margin-bottom: 14px; }
+
+      .modal-panel { max-height: 92vh; }
+      .modal-name { font-size: 26px; }
+      .modal-stats { grid-template-columns: repeat(3, 1fr); }
+
+      .pay-modal { max-height: 92vh; }
+      .pay-amount { font-size: 30px; }
+
+      .sell-inner { grid-template-columns: 1fr; gap: 28px; }
+      .how-grid { grid-template-columns: 1fr 1fr; }
+
+      footer { padding: 20px 16px; }
     }
-    @media(max-width:480px) {
-      .hero { padding: 48px 16px 40px; }
-      header { padding: 0 16px; }
-      .skills-section, .sell-cta { padding-left: 16px; padding-right: 16px; }
+
+    /* ── RESPONSIVE: SMALL MOBILE (≤480px) ── */
+    @media (max-width: 480px) {
+      .hero-title { font-size: clamp(40px, 16vw, 64px); }
+      .hero-bg-art { display: none; }
+
+      .filter-bar { gap: 6px; padding: 10px 14px; }
+      .filter-tag { font-size: 9px; padding: 4px 10px; }
+      .search-input { width: 100px; font-size: 10px; }
+
+      .skills-grid { grid-template-columns: 1fr; }
+      .card-name { font-size: 18px; }
+
+      .modal-stats { grid-template-columns: repeat(3, 1fr); }
+      .modal-stat-val { font-size: 20px; }
+
+      .how-grid { grid-template-columns: 1fr; }
+
+      .pay-amount { font-size: 28px; }
+      .metamask-btn { font-size: 16px; }
+
+
     }
   </style>
 </head>
 <body>
 
-<div class="top-stripe"></div>
+<!-- hazard top stripe -->
+<div class="hazard"></div>
 
-<!-- ══════════════ HEADER ══════════════ -->
+<!-- ── HEADER ── -->
 <header>
-  <a class="logo" href="/">
-    <svg class="logo-svg" viewBox="0 0 22 28" fill="none">
-      <path d="M4 2 C3.5 6.5 3 12 4 19 C4.5 22 5 25 4 28" stroke="#c8ff00" stroke-width="2.2" stroke-linecap="round"/>
-      <path d="M11 0.5 C10 5 9.5 12 10 19 C10.5 22.5 11 26 10 28" stroke="#c8ff00" stroke-width="2.8" stroke-linecap="round"/>
-      <path d="M18 2 C17.5 6.5 17 12 17 19 C17 22 16.5 25 15 28" stroke="#c8ff00" stroke-width="2.2" stroke-linecap="round"/>
-    </svg>
-    <span class="wordmark">PIKO<b>CLAW</b></span>
-  </a>
+  <div class="logo">
+    <div class="logo-icon">
+      <img src="logo-icon.svg" width="32" height="32" alt="PikoClaw icon">
+    </div>
+    PIKOCLAW
+  </div>
 
-  <div class="header-spacer"></div>
-
-  <nav class="header-nav">
-    <a class="nav-link" href="#skills">SKILLS</a>
-    <a class="nav-link" href="#how">HOW IT WORKS</a>
-    <a class="nav-link" href="#sell">SELL</a>
-    <a class="nav-link" href="#x402">x402</a>
-    <a class="nav-gh" href="https://github.com/charlesxbt/pikoclaw" target="_blank" rel="noopener">
-      <!-- GitHub icon -->
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-      </svg>
-      <span id="ghStars" class="nav-gh-stars">★</span>
-    </a>
+  <nav class="nav-links">
+    <a href="#skills">BROWSE</a>
+    <a href="#sell">SELL</a>
+    <a href="#how">HOW IT WORKS</a>
+    <a href="https://github.com/charlesxbt/pikoclaw" target="_blank" rel="noopener">GITHUB</a>
   </nav>
+  <div class="nav-socials">
+    <!-- GitHub icon -->
+    <a class="nav-social-btn" href="https://github.com/charlesxbt/pikoclaw" target="_blank" rel="noopener" title="GitHub @charlesxbt" aria-label="GitHub">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.742 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+    </a>
+    <!-- X/Twitter icon -->
+    <a class="nav-social-btn" href="https://x.com/_PikoClaw" target="_blank" rel="noopener" title="X @charlesxbt" aria-label="X / Twitter">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+    </a>
+  </div>
 
-  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+  <button class="wallet-btn" id="walletBtn" onclick="connectWallet()">CONNECT WALLET</button>
+  <button class="menu-btn" onclick="openMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </header>
 
-<nav class="mobile-nav" id="mobileNav">
-  <a href="#skills" onclick="closeMobileNav()">SKILLS</a>
-  <a href="#how" onclick="closeMobileNav()">HOW IT WORKS</a>
-  <a href="#sell" onclick="closeMobileNav()">SELL</a>
-  <a href="#x402" onclick="closeMobileNav()">x402 PROTOCOL</a>
-  <a href="https://github.com/charlesxbt/pikoclaw" target="_blank" rel="noopener">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-    </svg>
-    GITHUB — charlesxbt/pikoclaw
-  </a>
-</nav>
-
-<!-- ══════════════ HERO ══════════════ -->
-<section class="hero fade">
-  <div class="hero-eyebrow">AI AGENT SKILLS MARKETPLACE</div>
-  <h1 class="hero-title">
-    AI<br>AGENT<br><span class="a">SKILLS</span><br><span class="d">MARKET</span>
-  </h1>
-
-  <div class="hero-body">
-    <div>
-      <div class="install-label">SEND YOUR AGENT HERE</div>
-      <div class="install-box" onclick="copyInstall()">
-        <span class="install-prompt">$</span>
-        <span class="install-cmd" id="installCmd">curl https://raw.githubusercontent.com/charlesxbt/pikoclaw/main/agent.md</span>
-        <button class="copy-btn" id="copyBtn" title="Copy">
-          <svg id="copyIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
-            <rect x="9" y="9" width="13" height="13"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-          </svg>
-        </button>
+<!-- ── MOBILE MENU ── -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-head">
+    <div class="logo">
+      <div class="logo-icon">
+        <img src="logo-icon.svg" width="32" height="32" alt="PikoClaw icon">
       </div>
-      <p class="hero-desc">
-        Buy and sell autonomous AI skills. GitHub-native, agent-first.<br>
-        Your agent shops autonomously via x402 — no human checkout.
-        <div class="tags">
-          <span class="tag">x402 PROTOCOL</span>
-          <span class="tag">GITHUB NATIVE</span>
-          <span class="tag">USDC ON BASE</span>
-          <span class="tag">NO SIGN-UP</span>
-          <span class="tag">AGENT READY</span>
-        </div>
-      </p>
+      PIKOCLAW
     </div>
-
-    <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-val" id="statSkills">12</div>
-        <div class="stat-lbl">SKILLS LISTED</div>
-      </div>
-      <div class="stat">
-        <div class="stat-val" id="statStars">—</div>
-        <div class="stat-lbl">GH STARS</div>
-      </div>
-      <div class="stat">
-        <div class="stat-val">$0.04</div>
-        <div class="stat-lbl">MIN PRICE</div>
-      </div>
-    </div>
+    <button class="mobile-menu-close" onclick="closeMenu()">✕</button>
   </div>
-</section>
-
-<!-- ══════════════ GITHUB ACTIVITY ══════════════ -->
-<div class="gh-activity fade">
-  <div class="gh-act-head">
-    <span>RECENT COMMITS</span>
-    <a href="https://github.com/charlesxbt/pikoclaw/commits/main" target="_blank" rel="noopener">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-      </svg>
-      VIEW ALL ON GITHUB ›
+  <div class="mobile-menu-links">
+    <a href="#skills" onclick="closeMenu()">BROWSE</a>
+    <a href="#sell" onclick="closeMenu()">SELL</a>
+    <a href="#how" onclick="closeMenu()">HOW IT WORKS</a>
+    <a href="https://github.com/charlesxbt/pikoclaw" target="_blank" rel="noopener" onclick="closeMenu()">GITHUB REPO</a>
+  </div>
+  <div style="border-top:1px solid rgba(0,0,0,.12); padding: 14px 24px 6px; font-size:9px; letter-spacing:.2em; color:rgba(0,0,0,.35);">SOCIAL</div>
+  <div style="display:flex; gap:10px; padding:6px 24px 20px;">
+    <a href="https://github.com/charlesxbt" target="_blank" rel="noopener" onclick="closeMenu()"
+       style="display:flex; align-items:center; gap:8px; background:var(--black); color:var(--orange); padding:10px 16px; font-family:var(--mono); font-size:11px; letter-spacing:.1em; font-weight:700; text-decoration:none; flex:1; justify-content:center;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.742 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+      GITHUB
+    </a>
+    <a href="https://x.com/_PikoClaw" target="_blank" rel="noopener" onclick="closeMenu()"
+       style="display:flex; align-items:center; gap:8px; background:var(--black); color:var(--orange); padding:10px 16px; font-family:var(--mono); font-size:11px; letter-spacing:.1em; font-weight:700; text-decoration:none; flex:1; justify-content:center;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+      X / TWITTER
     </a>
   </div>
-  <div class="gh-commits" id="ghCommits">
-    <div class="gh-commit-loading">LOADING COMMITS...</div>
+  <button class="mobile-wallet-btn" id="mobileWalletBtn" onclick="connectWallet(); closeMenu();">CONNECT WALLET</button>
+  <div class="mobile-menu-footer">
+    <span>AGENT-NATIVE</span>
+    <span>USDC ON BASE</span>
+    <span>PIKOCLAW.SH</span>
   </div>
 </div>
 
-<!-- ══════════════ MARQUEE ══════════════ -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span class="mi">PIKOCLAW <span class="ms">///</span> AI AGENT SKILLS <span class="ms">///</span> BUY &amp; SELL <span class="ms">///</span> DEPLOY ON DEMAND <span class="ms">///</span> X402 PAYMENTS <span class="ms">///</span> GITHUB NATIVE <span class="ms">///</span> PLUG &amp; PLAY <span class="ms">///</span> NO SIGN-UP <span class="ms">///</span> PERMISSIONLESS <span class="ms">///</span> USDC ON BASE <span class="ms">///</span> AGENT AUTONOMY <span class="ms">///</span>&nbsp;</span>
-    <span class="mi">PIKOCLAW <span class="ms">///</span> AI AGENT SKILLS <span class="ms">///</span> BUY &amp; SELL <span class="ms">///</span> DEPLOY ON DEMAND <span class="ms">///</span> X402 PAYMENTS <span class="ms">///</span> GITHUB NATIVE <span class="ms">///</span> PLUG &amp; PLAY <span class="ms">///</span> NO SIGN-UP <span class="ms">///</span> PERMISSIONLESS <span class="ms">///</span> USDC ON BASE <span class="ms">///</span> AGENT AUTONOMY <span class="ms">///</span>&nbsp;</span>
-  </div>
-</div>
-
-<!-- ══════════════ SKILLS ══════════════ -->
-<section class="skills-section" id="skills">
-  <div class="section-head">
-    <span class="section-lbl">AVAILABLE SKILLS</span>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <span class="section-count" id="resultsCount"></span>
-      <a class="section-gh-link" href="https://github.com/charlesxbt/pikoclaw/tree/main/skills" target="_blank" rel="noopener">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-        </svg>
-        VIEW ON GITHUB
-      </a>
-    </div>
-  </div>
-
-  <div class="search-wrap">
-    <div class="search-box">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-      </svg>
-      <input class="search-input" id="searchInput" type="text" placeholder="SEARCH SKILLS, TAGS...">
-    </div>
-    <button class="clear-btn" id="clearBtn" onclick="clearSearch()">CLEAR ✕</button>
-  </div>
-
-  <div class="tag-filters" id="tagFilters"></div>
-  <div class="skills-grid" id="skillsGrid"></div>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg-art">🦞</div>
+  <div class="hero-eyebrow">AI AGENT SKILLS MARKETPLACE</div>
+  <div class="hero-title">AI SKILL<br>MARKETPLACE</div>
+  <div class="hero-cmd-label">SEND YOUR AGENT</div>
+  <button class="hero-cmd" onclick="copyHeroCmd()" id="heroCmd">
+    <span class="prompt">$</span>
+    <span class="cmd-text" id="heroCmdText">curl pikoclaw.sh/agent.md</span>
+    <svg class="copy-icon" id="heroCopyIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="1"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+  </button>
+  <div class="hero-desc">Buy and sell AI agent skills.<br>GitHub-native · x402 payments on Base · No sign-up.</div>
 </section>
 
-<!-- ══════════════ MARQUEE 2 ══════════════ -->
-<div class="marquee-wrap rev" style="margin-bottom:0;">
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
   <div class="marquee-track">
-    <span class="mi">BROWSE AGENT <span class="ms">///</span> CODE REVIEW <span class="ms">///</span> MEMORY STORE <span class="ms">///</span> NL→SQL <span class="ms">///</span> VISION EXTRACT <span class="ms">///</span> API CHAIN <span class="ms">///</span> DATA CLEANER <span class="ms">///</span> EMAIL DRAFT <span class="ms">///</span> GIT OPS <span class="ms">///</span> VOICE AGENT <span class="ms">///</span> WEB SEARCH <span class="ms">///</span>&nbsp;</span>
-    <span class="mi">BROWSE AGENT <span class="ms">///</span> CODE REVIEW <span class="ms">///</span> MEMORY STORE <span class="ms">///</span> NL→SQL <span class="ms">///</span> VISION EXTRACT <span class="ms">///</span> API CHAIN <span class="ms">///</span> DATA CLEANER <span class="ms">///</span> EMAIL DRAFT <span class="ms">///</span> GIT OPS <span class="ms">///</span> VOICE AGENT <span class="ms">///</span> WEB SEARCH <span class="ms">///</span>&nbsp;</span>
+    <span class="marquee-item">PIKOCLAW <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">AI AGENT SKILLS <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">BUY &amp; SELL <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">X402 PAYMENTS <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">GITHUB NATIVE <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">USDC ON BASE <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">NO SIGN-UP <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">PERMISSIONLESS <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">AGENT AUTONOMY <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">PIKOCLAW <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">AI AGENT SKILLS <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">BUY &amp; SELL <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">X402 PAYMENTS <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">GITHUB NATIVE <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">USDC ON BASE <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">NO SIGN-UP <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">PERMISSIONLESS <span class="marquee-sep">///</span></span>
+    <span class="marquee-item">AGENT AUTONOMY <span class="marquee-sep">///</span></span>
   </div>
 </div>
 
-<!-- ══════════════ HOW IT WORKS ══════════════ -->
-<div class="how-section" id="how">
-  <div class="how-inner fade">
-    <div class="sec-eyebrow">HOW IT WORKS</div>
-    <div class="sec-title">GITHUB IS YOUR<br>STOREFRONT</div>
-    <p class="sec-sub">No dashboard, no CMS. Add a <code>SKILL.md</code> to any repo and your catalog goes live. Agents discover, pay, and consume — fully autonomous.</p>
+<!-- ── FILTER BAR ── -->
+<div class="filter-bar" id="skills">
+  <span class="filter-lbl">FILTER:</span>
+  <button class="filter-tag active" onclick="setTag(null, this)">ALL</button>
+  <button class="filter-tag" onclick="setTag('search', this)">SEARCH</button>
+  <button class="filter-tag" onclick="setTag('data', this)">DATA</button>
+  <button class="filter-tag" onclick="setTag('code', this)">CODE</button>
+  <button class="filter-tag" onclick="setTag('web3', this)">WEB3</button>
+  <button class="filter-tag" onclick="setTag('voice', this)">VOICE</button>
+  <button class="filter-tag" onclick="setTag('vision', this)">VISION</button>
+  <button class="filter-tag" onclick="setTag('free', this)">FREE</button>
+  <div class="search-wrap">
+    <input class="search-input" type="text" placeholder="SEARCH..." id="searchInput" oninput="handleSearch(this.value)">
+    <svg class="search-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </div>
+</div>
 
+<!-- ── MAIN GRID ── -->
+<main>
+  <div class="grid-header">
+    <div class="grid-count" id="gridCount">12 <span>SKILLS</span></div>
+    <select class="sort-select" onchange="handleSort(this.value)">
+      <option value="default">SORT: DEFAULT</option>
+      <option value="price-asc">PRICE ↑</option>
+      <option value="price-desc">PRICE ↓</option>
+      <option value="stars">STARS</option>
+      <option value="uses">MOST USED</option>
+    </select>
+  </div>
+  <div class="skills-grid" id="skillsGrid"></div>
+</main>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="section-eyebrow">X402 PROTOCOL</div>
+    <div class="section-title">HOW IT<br>WORKS</div>
     <div class="how-grid">
-      <div class="code-card">
-        <div class="code-chrome">
-          <div class="chrome-dots"><span></span><span></span><span></span></div>
-          <div class="chrome-fname">SKILL.md</div>
-          <a class="chrome-gh" href="https://github.com/charlesxbt/pikoclaw/tree/main/skills/browse-agent/SKILL.md" target="_blank" rel="noopener">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-            </svg>
-            VIEW ON GITHUB
-          </a>
-        </div>
-        <pre class="code-body"><code><span class="sy-sep">---</span>
-<span class="sy-key">name</span><span class="sy-col">:</span> <span class="sy-str">Browse Agent</span>
-<span class="sy-key">description</span><span class="sy-col">:</span> <span class="sy-str">Autonomous browser for agents</span>
-<span class="sy-key">version</span><span class="sy-col">:</span> <span class="sy-num">1.4.2</span>
-<span class="sy-key">price</span><span class="sy-col">:</span> <span class="sy-num">0.04</span>
-
-<span class="sy-key">x402</span><span class="sy-col">:</span>
-  <span class="sy-key">enabled</span><span class="sy-col">:</span> <span class="sy-str">true</span>
-  <span class="sy-key">network</span><span class="sy-col">:</span> <span class="sy-tag">base</span>
-  <span class="sy-key">asset</span><span class="sy-col">:</span> <span class="sy-tag">USDC</span>
-  <span class="sy-key">wallet</span><span class="sy-col">:</span> <span class="sy-str">"0xYourWalletAddress"</span>
-
-<span class="sy-key">tags</span><span class="sy-col">:</span>
-  <span class="sy-dash">-</span> <span class="sy-tag">browser</span>
-  <span class="sy-dash">-</span> <span class="sy-tag">playwright</span>
-  <span class="sy-dash">-</span> <span class="sy-tag">automation</span>
-<span class="sy-sep">---</span>
-
-<span class="sy-cmt"># Browse Agent</span>
-<span class="sy-cmt"># Agents read this to understand usage.</span>
-<span class="sy-cmt"># Full API docs, examples, and auth here.</span></code></pre>
-        <div class="code-note">
-          If <code>price</code> &gt; 0 and no payment method configured, the skill cannot be purchased.
-          Use <code>price: 0</code> for free/open skills.
-        </div>
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <div class="how-card-title">AGENT DISCOVERS</div>
+        <div class="how-card-txt">Agent reads <code>pikoclaw.sh/agent.md</code> — a machine-readable index of all skills with prices, endpoints, and SKILL.md specs.</div>
       </div>
-
-      <div class="steps">
-        <div class="step">
-          <div class="step-n">01</div>
-          <div>
-            <div class="step-lbl">FORK OR CREATE A GITHUB REPO</div>
-            <p>Start from <a href="https://github.com/charlesxbt/pikoclaw" target="_blank" rel="noopener">charlesxbt/pikoclaw</a> or create your own. Your org becomes your storefront identity.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-n">02</div>
-          <div>
-            <div class="step-lbl">ADD SKILL.MD TO YOUR REPO</div>
-            <p>Define <code>name</code>, <code>description</code>, <code>price</code>, and your wallet address. This file is what agents read to understand and purchase your skill.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-n">03</div>
-          <div>
-            <div class="step-lbl">SUBMIT VIA GITHUB ISSUES</div>
-            <p>Open an issue with your repo URL. After review, your skill appears in the marketplace. Community-governed, no gatekeeping.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-n">04</div>
-          <div>
-            <div class="step-lbl">AGENTS BUY, YOU EARN</div>
-            <p>Buyers pay via USDC over x402 — agent-native, no human checkout. Revenue routes directly to your wallet. Instant settlement on Base L2.</p>
-          </div>
-        </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <div class="how-card-title">402 RETURNED</div>
+        <div class="how-card-txt">Agent calls a skill endpoint. Server responds with <code>HTTP 402</code> including USDC amount, recipient wallet, and Base network details.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <div class="how-card-title">ON-CHAIN PAY</div>
+        <div class="how-card-txt">Agent broadcasts USDC payment on Base L2. Confirmed in ~2 seconds. Gas fee under $0.001. No human approval needed.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">04</div>
+        <div class="how-card-title">SKILL EXECUTES</div>
+        <div class="how-card-txt">Agent retries with payment receipt header. Skill runs, returns structured JSON output. Revenue routes instantly to the seller's wallet.</div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ══════════════ SELL CTA ══════════════ -->
-<div class="sell-cta" id="sell">
-  <div class="cta-box fade">
-    <div class="cta-text">
-      <div class="cta-eyebrow">LIST YOUR SKILL</div>
-      <div class="cta-title">TURN YOUR CODE<br>INTO REVENUE</div>
-      <p class="cta-desc">
-        Ship a skill once, sell it forever. No platform fees until launch.
-        Add a <code>SKILL.md</code>, set your price, configure your wallet.
-        Your GitHub repo is your storefront — you own everything.
-      </p>
-    </div>
-    <div class="cta-actions">
-      <a class="btn-primary" href="https://github.com/charlesxbt/pikoclaw/issues/new?template=list-skill.md&title=LIST+SKILL%3A+%5BSkill+Name%5D" target="_blank" rel="noopener">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-        </svg>
-        SUBMIT YOUR SKILL
-      </a>
-      <a class="btn-outline" href="https://github.com/charlesxbt/pikoclaw/blob/main/README.md" target="_blank" rel="noopener">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-        </svg>
-        READ THE DOCS
+<!-- ── SELL SECTION ── -->
+<section class="sell-section" id="sell">
+  <div class="sell-inner">
+    <div>
+      <div class="section-eyebrow" style="color:rgba(0,0,0,.45);">FOR BUILDERS</div>
+      <div class="sell-title">SELL YOUR<br>SKILLS</div>
+      <div class="sell-body">
+        Package your tool as a SKILL.md. Set a price. Push to GitHub.
+        Agents worldwide discover and pay you directly — no middlemen, no fees beyond gas.
+      </div>
+      <a href="https://github.com/charlesxbt/pikoclaw/issues/new?title=LIST+MY+SKILL&body=skill+name:%0Arepo:%0Aprice+%28USDC%29:%0Awallet:" target="_blank" class="btn-secondary" style="max-width:280px;">
+        LIST YOUR SKILL →
       </a>
     </div>
-  </div>
-</div>
-
-<!-- ══════════════ x402 PROTOCOL ══════════════ -->
-<div class="x402-section" id="x402">
-  <div class="x402-inner fade">
-    <div class="sec-eyebrow">x402 PROTOCOL</div>
-    <div class="sec-title">AGENT-NATIVE PAYMENTS</div>
-    <p class="sec-sub">
-      HTTP 402 "Payment Required" — agents pay autonomously.
-      No human checkout, no OAuth dance, no invoices. Just pure machine-to-machine commerce.
-    </p>
-
-    <div class="x402-grid">
-      <div class="x402-explain">
-        <div class="x402-step">
-          <div class="x402-arrow">→</div>
-          <div>
-            <div class="x402-step-lbl">AGENT CALLS THE SKILL API</div>
-            <div class="x402-step-txt">Your AI agent sends a standard HTTP request to the skill endpoint. No prior auth needed — the protocol negotiates payment inline.</div>
-          </div>
-        </div>
-        <div class="x402-step">
-          <div class="x402-arrow">←</div>
-          <div>
-            <div class="x402-step-lbl">SERVER RETURNS HTTP 402</div>
-            <div class="x402-step-txt">The server responds with <code>402 Payment Required</code> + payment details: amount, currency (USDC), recipient wallet, network (Base).</div>
-          </div>
-        </div>
-        <div class="x402-step">
-          <div class="x402-arrow">⚡</div>
-          <div>
-            <div class="x402-step-lbl">AGENT PAYS ON-CHAIN</div>
-            <div class="x402-step-txt">The agent submits a USDC microtransaction on Base L2. Settlement in ~2 seconds. Fee under $0.001. No human approval required.</div>
-          </div>
-        </div>
-        <div class="x402-step">
-          <div class="x402-arrow">✓</div>
-          <div>
-            <div class="x402-step-lbl">ACCESS GRANTED</div>
-            <div class="x402-step-txt">Payment verified on-chain. Server returns the skill response. Revenue routes directly to the seller's wallet. Zero platform escrow.</div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="terminal">
-          <div class="term-bar">
-            <div class="term-dots"><span></span><span></span><span></span></div>
-            <div class="term-title">x402 LIVE DEMO</div>
-          </div>
-          <div class="term-body" id="termBody">
-            <div class="term-line"><span class="term-prompt">$</span><span class="term-cmd" id="termCmd"></span><span class="term-cursor" id="termCursor"></span></div>
-            <div id="termOutput"></div>
-          </div>
-          <div class="term-btn-row">
-            <button class="term-btn active" id="scenarioUser" onclick="runScenario('user')">USER FLOW</button>
-            <button class="term-btn" id="scenarioAgent" onclick="runScenario('agent')">AGENT FLOW</button>
-            <button class="term-btn" id="scenarioSell" onclick="runScenario('sell')">SELL FLOW</button>
-          </div>
-        </div>
+    <div>
+      <div class="modal-sec-lbl" style="margin-bottom:10px;">SKILL.MD TEMPLATE</div>
+      <div class="sell-code">
+<span class="sc-c"># my-skill/SKILL.md</span>
+---
+<span class="sc-k">name</span>: <span class="sc-s">my-awesome-skill</span>
+<span class="sc-k">description</span>: <span class="sc-s">What your skill does</span>
+<span class="sc-k">version</span>: <span class="sc-s">1.0.0</span>
+<span class="sc-k">price</span>: <span class="sc-v">0.05</span> <span class="sc-c"># USDC</span>
+<span class="sc-k">wallet</span>: <span class="sc-s">0xYourWalletAddress</span>
+<span class="sc-k">x402</span>:
+  <span class="sc-k">enabled</span>: <span class="sc-v">true</span>
+  <span class="sc-k">network</span>: <span class="sc-s">base</span>
+  <span class="sc-k">endpoint</span>: <span class="sc-s">https://api.you.sh/skill</span>
+---
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ══════════════ FOOTER ══════════════ -->
+<!-- ── FOOTER ── -->
+<div class="hazard"></div>
 <footer>
   <div class="footer-inner">
-    <span>PIKOCLAW — AGENT-NATIVE SKILLS MARKETPLACE</span>
-    <div class="footer-links">
-      <a href="https://github.com/charlesxbt/pikoclaw" target="_blank" rel="noopener">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-        </svg>
-        charlesxbt/pikoclaw
-      </a>
-      <a href="https://github.com/charlesxbt/pikoclaw/issues/new?template=list-skill.md" target="_blank" rel="noopener">SUBMIT A SKILL</a>
-      <a href="https://github.com/charlesxbt/pikoclaw/blob/main/README.md" target="_blank" rel="noopener">DOCS</a>
-      <a class="footer-badge" href="https://x.com/_PikoClaw" target="_blank" rel="noopener">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-        @_PIKOCLAW
-      </a>
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="logo-icon.svg" width="24" height="24" style="vertical-align:middle; margin-right:8px;">PIKOCLAW</div>
+      <div class="footer-tagline">AI AGENT SKILLS MARKETPLACE · USDC ON BASE</div>
     </div>
-    <span>© 2025 PIKOCLAW · MIT LICENSE</span>
+    <div class="footer-right">
+      <div class="footer-links">
+        <span>AGENT-NATIVE</span>
+        <span>·</span>
+        <a href="https://github.com/charlesxbt/pikoclaw" target="_blank" rel="noopener">REPO</a>
+        <span>·</span>
+        <a href="#skills">BROWSE</a>
+        <span>·</span>
+        <a href="#how">DOCS</a>
+      </div>
+      <div class="footer-socials">
+        <a class="footer-social-btn" href="https://github.com/charlesxbt/pikoclaw" target="_blank" rel="noopener" title="GitHub @charlesxbt" aria-label="GitHub">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.742 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        </a>
+        <a class="footer-social-btn" href="https://x.com/_PikoClaw" target="_blank" rel="noopener" title="X @charlesxbt" aria-label="X / Twitter">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+        </a>
+      </div>
+    </div>
   </div>
 </footer>
 
-<!-- ══════════════ MODAL ══════════════ -->
+<!-- ── SKILL MODAL ── -->
 <div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
   <div class="modal-panel" id="modalPanel">
+    <div class="modal-hazard"></div>
     <div class="modal-head">
       <div>
         <div class="modal-name" id="modalName"></div>
@@ -1112,362 +1410,318 @@
   </div>
 </div>
 
-<!-- ══════════════ SCRIPT ══════════════ -->
-<script>
+<!-- ── PAY MODAL ── -->
+<div class="pay-modal-backdrop" id="payBackdrop" onclick="closePayModal(event)">
+  <div class="pay-modal" id="payModal">
+    <div class="pay-modal-hazard"></div>
+    <div class="pay-modal-head">
+      <div class="pay-modal-title">PAY WITH USDC</div>
+      <button class="pay-modal-close" onclick="closePayModalDirect()">✕</button>
+    </div>
+    <div class="pay-modal-body" id="payModalBody"></div>
+  </div>
+</div>
 
-// ── SKILLS DATA ────────────────────────────────────────────
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"></div>
+
+<!-- ── SCRIPT ── -->
+<script>
+// ── CONSTANTS ────────────────────────────────────────────
+const WALLET      = '0x0b3f8Af44Af782890f31A73cDd3a40de40098B94';
+const BASE_ID     = '0x2105'; // Base Mainnet chainId = 8453
+const USDC_BASE   = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
+
+// ── WALLET STATE ─────────────────────────────────────────
+let walletAddress = null;
+
+// ── SKILLS DATA ──────────────────────────────────────────
 const SKILLS = [
   {
     id: 'browse-agent',
     name: 'BROWSE AGENT',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/browse-agent',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/browse-agent',
     desc: 'Autonomous browser for agents. Navigate pages, fill forms, click buttons, extract data — no human needed. Playwright-powered with structured JSON output.',
     tags: ['browser', 'playwright', 'scraping', 'automation'],
-    price: 0.04,
-    pay: ['x402'],
+    price: 0.04, pay: ['x402'],
     isNew: true, isPinned: true,
     stars: 312, uses: 2184, version: '1.4.2',
   },
   {
     id: 'code-review',
     name: 'CODE REVIEW',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/code-review',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/code-review',
     desc: 'Deep static analysis for security, performance, and style. Returns structured JSON with severity levels, file paths, line numbers, and actionable fix suggestions.',
     tags: ['security', 'refactor', 'code', 'audit'],
-    price: 0.10,
-    pay: ['x402', 'paypal'],
+    price: 0.10, pay: ['x402', 'paypal'],
     isNew: false, isPinned: false,
     stars: 198, uses: 941, version: '2.1.0',
   },
   {
     id: 'mem-store',
     name: 'MEMORY STORE',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/mem-store',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/mem-store',
     desc: 'Persistent vector memory across agent sessions. Store, search, and retrieve long-term context with semantic similarity. Supports OpenAI, Cohere, and local embeddings.',
     tags: ['memory', 'vector', 'embeddings', 'context'],
-    price: 0.00,
-    pay: [],
+    price: 0.00, pay: [],
     isNew: false, isPinned: false,
     stars: 547, uses: 5621, version: '3.0.1',
   },
   {
     id: 'nl2sql',
     name: 'NL → SQL',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/nl2sql',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/nl2sql',
     desc: 'Natural language to optimized SQL. Schema-aware query generation with index hints. Supports PostgreSQL, MySQL, SQLite, BigQuery, Snowflake.',
-    tags: ['sql', 'database', 'nl2sql', 'query'],
-    price: 0.03,
-    pay: ['x402'],
+    tags: ['sql', 'database', 'nl2sql', 'query', 'data'],
+    price: 0.03, pay: ['x402'],
     isNew: false, isPinned: false,
     stars: 134, uses: 783, version: '1.2.4',
   },
   {
     id: 'vision-extract',
     name: 'VISION EXTRACT',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/vision',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/vision',
     desc: 'Object detection, OCR, layout parsing, and structured data extraction from images and PDFs. Multi-model backend (GPT-4V, Claude, Gemini). Returns clean JSON.',
     tags: ['vision', 'ocr', 'multimodal', 'pdf'],
-    price: 0.08,
-    pay: ['x402', 'paypal'],
+    price: 0.08, pay: ['x402', 'paypal'],
     isNew: false, isPinned: false,
     stars: 221, uses: 1456, version: '1.5.0',
   },
   {
     id: 'api-chain',
     name: 'API CHAIN',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/api-chain',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/api-chain',
     desc: 'Compose multi-step API workflows. Auto retry, OAuth 2.0 + API key auth, rate limiting, response normalization. Define chains in YAML, execute via one call.',
     tags: ['api', 'orchestration', 'http', 'workflow'],
-    price: 0.00,
-    pay: [],
+    price: 0.00, pay: [],
     isNew: false, isPinned: false,
     stars: 289, uses: 2033, version: '2.3.1',
   },
   {
     id: 'data-clean',
     name: 'DATA CLEANER',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/data-clean',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/data-clean',
     desc: 'Normalize, deduplicate, and validate datasets. Auto-infer schema, fix data types, fill nulls with contextual imputation. Handles CSV, JSON, Parquet, Excel.',
     tags: ['data', 'etl', 'csv', 'cleaning'],
-    price: 0.05,
-    pay: ['x402'],
+    price: 0.05, pay: ['x402'],
     isNew: false, isPinned: false,
     stars: 88, uses: 412, version: '1.1.0',
   },
   {
     id: 'email-draft',
     name: 'EMAIL DRAFT',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/email-draft',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/email-draft',
     desc: 'Generate professional context-aware emails — cold outreach, investor updates, support replies. Tone-adaptive (formal/casual/technical). Multilingual.',
     tags: ['email', 'copywriting', 'outreach', 'nlp'],
-    price: 0.02,
-    pay: ['x402', 'paypal'],
+    price: 0.02, pay: ['x402', 'paypal'],
     isNew: false, isPinned: false,
     stars: 167, uses: 3287, version: '1.3.2',
   },
   {
     id: 'git-ops',
     name: 'GIT OPS',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/git-ops',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/git-ops',
     desc: 'AI agents that read repos, write code, open pull requests, and review diffs. Full GitHub REST + GraphQL API coverage. All actions auditable and reversible.',
-    tags: ['github', 'pr', 'ci', 'devops'],
-    price: 0.07,
-    pay: ['x402'],
+    tags: ['github', 'pr', 'ci', 'devops', 'code'],
+    price: 0.07, pay: ['x402'],
     isNew: false, isPinned: false,
     stars: 176, uses: 892, version: '1.6.1',
   },
   {
     id: 'voice-agent',
     name: 'VOICE AGENT',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/voice-agent',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/voice-agent',
     desc: 'Real-time speech-to-text and text-to-speech for agents. 40+ languages. Low-latency streaming via WebSocket. Compatible with Twilio, WebRTC, raw PCM.',
     tags: ['voice', 'speech', 'tts', 'streaming'],
-    price: 0.06,
-    pay: ['x402'],
+    price: 0.06, pay: ['x402'],
     isNew: false, isPinned: false,
     stars: 203, uses: 1102, version: '1.2.0',
   },
   {
     id: 'web-search',
     name: 'WEB SEARCH',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/web-search',
-    desc: 'Agentic web search with structured result extraction. Supports Brave, SerpAPI, Bing. Returns ranked snippets, source URLs, and extracted facts as JSON.',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/web-search',
+    desc: 'Real-time web search with structured results. Source ranking, deduplication, snippet extraction. Supports Google, Bing, Brave, DuckDuckGo backends.',
     tags: ['search', 'web', 'research', 'rag'],
-    price: 0.01,
-    pay: ['x402'],
-    isNew: true, isPinned: false,
-    stars: 421, uses: 6130, version: '2.0.0',
+    price: 0.02, pay: ['x402'],
+    isNew: false, isPinned: false,
+    stars: 445, uses: 7832, version: '2.0.4',
   },
   {
-    id: 'crypto-pay',
-    name: 'CRYPTO PAY',
-    org: 'charlesxbt',
-    repo: 'pikoclaw',
-    path: 'skills/crypto-pay',
-    desc: 'Send, receive, and verify USDC payments on Base L2. Full x402 protocol support built in. Works with Coinbase CDP, viem, and ethers.js. Native agent wallet.',
+    id: 'usdc-pay',
+    name: 'USDC PAYMENTS',
+    org: 'charlesxbt', repo: 'pikoclaw', path: 'skills/usdc-pay',
+    desc: 'x402-native USDC payment processing. Verify on-chain receipts, check balances, split payments to multiple wallets. Base L2 optimized with sub-cent gas.',
     tags: ['payments', 'usdc', 'base', 'web3'],
-    price: 0.00,
-    pay: [],
-    isNew: true, isPinned: true,
-    stars: 389, uses: 2897, version: '1.0.0',
+    price: 0.01, pay: ['x402'],
+    isNew: true, isPinned: false,
+    stars: 91, uses: 634, version: '1.0.3',
   },
 ];
 
+// ── STATE ─────────────────────────────────────────────────
 let activeTag = null;
-let searchQ = '';
+let searchQ   = '';
+let sortMode  = 'default';
+let currentSkillId = null;
 
-// ── RENDER TAGS ────────────────────────────────────────────
-function renderTags() {
-  const tagCount = {};
-  SKILLS.forEach(s => s.tags.forEach(t => { tagCount[t] = (tagCount[t]||0)+1; }));
-  const tags = Object.entries(tagCount).sort((a,b) => b[1]-a[1]).slice(0,14).map(e=>e[0]);
-  const el = document.getElementById('tagFilters');
-  el.innerHTML = `<button class="tag-pill active" onclick="filterTag(null)">ALL</button>` +
-    tags.map(t => `<button class="tag-pill" onclick="filterTag('${t}')">${t.toUpperCase()}</button>`).join('');
+// ── GITHUB STARS ─────────────────────────────────────────
+async function fetchGitHubStars() {
+  try {
+    const r = await fetch('https://api.github.com/repos/charlesxbt/pikoclaw', {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) return;
+    const d = await r.json();
+    if (d.stargazers_count) {
+      // Update the pinned/main skill with real star count
+      const main = SKILLS.find(s => s.id === 'browse-agent');
+      if (main) main.stars = d.stargazers_count;
+      renderGrid();
+    }
+  } catch(e) { /* silent */ }
 }
 
-function filterTag(tag) {
-  activeTag = tag;
-  document.querySelectorAll('.tag-pill').forEach(p => {
-    const t = p.textContent.toLowerCase();
-    p.classList.toggle('active', tag ? t === tag : t === 'all');
-  });
-  renderGrid();
+// ── RENDER GRID ───────────────────────────────────────────
+function fmtNum(n) {
+  if (n >= 1000) return (n/1000).toFixed(1) + 'k';
+  return n;
 }
 
-// ── RENDER GRID ────────────────────────────────────────────
-function renderGrid() {
-  const q = searchQ.toLowerCase();
-  const filtered = SKILLS.filter(s => {
-    const matchesTag = !activeTag || s.tags.includes(activeTag);
-    const matchesQ = !q || s.name.toLowerCase().includes(q) ||
-      s.desc.toLowerCase().includes(q) || s.tags.some(t => t.includes(q));
-    return matchesTag && matchesQ;
-  });
-
-  const count = document.getElementById('resultsCount');
-  count.textContent = `${filtered.length} SKILL${filtered.length !== 1 ? 'S' : ''}`;
-
-  const grid = document.getElementById('skillsGrid');
-  if (!filtered.length) {
-    grid.innerHTML = `<div class="empty-state">
-      <div class="empty-title">NO SKILLS FOUND</div>
-      <div class="empty-sub">Try a different search or tag filter.</div>
-    </div>`;
-    return;
+function getFiltered() {
+  let list = [...SKILLS];
+  if (activeTag === 'free') {
+    list = list.filter(s => s.price === 0);
+  } else if (activeTag) {
+    list = list.filter(s => s.tags.includes(activeTag));
   }
+  if (searchQ) {
+    const q = searchQ.toLowerCase();
+    list = list.filter(s =>
+      s.name.toLowerCase().includes(q) ||
+      s.desc.toLowerCase().includes(q) ||
+      s.tags.some(t => t.includes(q))
+    );
+  }
+  if (sortMode === 'price-asc')  list.sort((a,b) => a.price - b.price);
+  if (sortMode === 'price-desc') list.sort((a,b) => b.price - a.price);
+  if (sortMode === 'stars')      list.sort((a,b) => b.stars - a.stars);
+  if (sortMode === 'uses')       list.sort((a,b) => b.uses - a.uses);
+  // pinned first (default only)
+  if (sortMode === 'default') list.sort((a,b) => (b.isPinned?1:0) - (a.isPinned?1:0));
+  return list;
+}
 
-  grid.innerHTML = filtered.map(s => {
-    const priceStr = s.price === 0 ? 'FREE' : `$${s.price.toFixed(2)}`;
-    const badgesHtml = [
-      s.isPinned ? `<span class="badge pinned">FEATURED</span>` : '',
-      s.isNew ? `<span class="badge new-b">NEW</span>` : '',
-      s.price === 0 ? `<span class="badge free">FREE</span>` : '',
-    ].join('');
-    const tagsHtml = s.tags.slice(0,4).map(t => `<span class="skill-tag">${t}</span>`).join('');
-    const ghUrl = `https://github.com/${s.org}/${s.repo}/tree/main/${s.path}`;
-
-    return `<div class="skill-card" onclick="openModal('${s.id}')">
-      <div class="skill-rail"></div>
-      <div class="skill-inner">
-        <div class="skill-head">
-          <div>
-            <div class="skill-name">${s.name}</div>
-            <div class="skill-org"><a href="${ghUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">@${s.org}</a></div>
-          </div>
-          <span class="view-btn">VIEW ›</span>
+function renderGrid() {
+  const list = getFiltered();
+  document.getElementById('gridCount').innerHTML =
+    `${list.length} <span>SKILL${list.length !== 1 ? 'S' : ''}</span>`;
+  document.getElementById('skillsGrid').innerHTML = list.map(s => {
+    const priceHtml = s.price === 0
+      ? `<span class="card-price-free">FREE</span>`
+      : `<span class="card-price">$${s.price.toFixed(2)}</span>`;
+    const badges = [
+      s.isPinned ? '<span class="badge badge-pin">📌 FEATURED</span>' : '',
+      s.isNew    ? '<span class="badge badge-new">NEW</span>' : '',
+      s.price === 0 ? '<span class="badge badge-free">FREE</span>' : '',
+    ].filter(Boolean).join('');
+    return `
+    <div class="skill-card" onclick="openModal('${s.id}')">
+      <div class="card-top">
+        <div class="card-name">${esc(s.name)}</div>
+        <div class="card-badges">${badges}</div>
+      </div>
+      <div class="card-desc">${esc(s.desc)}</div>
+      <div class="card-tags">${s.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
+      <div class="card-footer">
+        ${priceHtml}
+        <div class="card-stats">
+          <span class="card-stat">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            ${fmtNum(s.stars)}
+          </span>
+          <span class="card-stat">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            ${fmtNum(s.uses)}
+          </span>
         </div>
-        <div class="skill-desc">${s.desc}</div>
-        <div class="skill-tags">${tagsHtml}</div>
-      </div>
-      <div class="skill-meta">
-        <span>★ ${s.stars}</span>
-        <span>⚡ ${s.uses.toLocaleString()} uses</span>
-        <span>v${s.version}</span>
-      </div>
-      <div class="skill-foot">
-        <div class="badges">${badgesHtml}</div>
-        <div class="skill-price">${priceStr}</div>
       </div>
     </div>`;
   }).join('');
 }
 
-// ── SEARCH ────────────────────────────────────────────────
-const searchInput = document.getElementById('searchInput');
-const clearBtn = document.getElementById('clearBtn');
-searchInput.addEventListener('input', () => {
-  searchQ = searchInput.value;
-  clearBtn.classList.toggle('visible', !!searchQ);
-  renderGrid();
-});
-function clearSearch() {
-  searchInput.value = '';
-  searchQ = '';
-  clearBtn.classList.remove('visible');
+function setTag(tag, btn) {
+  activeTag = tag;
+  document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
   renderGrid();
 }
 
-// ── MODAL ─────────────────────────────────────────────────
+function handleSearch(v) {
+  searchQ = v.trim();
+  renderGrid();
+}
+
+function handleSort(v) {
+  sortMode = v;
+  renderGrid();
+}
+
+// ── SKILL MODAL ───────────────────────────────────────────
 function openModal(id) {
   const s = SKILLS.find(x => x.id === id);
   if (!s) return;
+  currentSkillId = id;
   const ghUrl = `https://github.com/${s.org}/${s.repo}/tree/main/${s.path}`;
-  const skillMdUrl = `https://github.com/${s.org}/${s.repo}/blob/main/${s.path}/SKILL.md`;
-  const rawUrl = `https://raw.githubusercontent.com/${s.org}/${s.repo}/main/${s.path}/SKILL.md`;
-  const issueUrl = `https://github.com/${s.org}/${s.repo}/issues/new?title=BUY+REQUEST%3A+${encodeURIComponent(s.name)}&body=Requesting+access+to+${encodeURIComponent(s.name)}%0A%0AAgent+ID%3A+%5Byour-agent-id%5D%0AWallet%3A+%5Byour-wallet%5D`;
 
   document.getElementById('modalName').textContent = s.name;
-  document.getElementById('modalOrg').innerHTML = `<a href="${ghUrl}" target="_blank" rel="noopener">@${s.org}/${s.repo}/${s.path}</a>`;
+  document.getElementById('modalOrg').textContent = `${s.org}/${s.repo} · v${s.version}`;
 
-  const priceStr = s.price === 0 ? 'FREE' : `$${s.price.toFixed(2)}`;
-  const payBadges = s.pay.map(p =>
-    `<span class="pay-badge ${p === 'x402' ? 'x402' : ''}">${p === 'x402' ? '⚡ x402 · USDC · BASE' : '💳 PayPal'}</span>`
-  ).join('');
-  const tagsHtml = s.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+  const payMethods = s.pay.length
+    ? s.pay.map(p => `<span class="modal-tag">${p.toUpperCase()}</span>`).join('')
+    : '<span class="modal-tag" style="opacity:.5">FREE</span>';
+
+  const buyBtn = s.price > 0
+    ? `<button class="btn-primary" onclick="handleBuy('${s.id}')">⚡ PAY ${s.price.toFixed(2)} USDC</button>`
+    : `<button class="btn-primary" style="background:var(--orangeD);" onclick="showToast('FREE SKILL — clone from GitHub!')">⬇ FREE — GET ON GITHUB</button>`;
 
   document.getElementById('modalBody').innerHTML = `
     <div>
       <div class="modal-sec-lbl">DESCRIPTION</div>
-      <div class="modal-desc">${s.desc}</div>
+      <div class="modal-desc">${esc(s.desc)}</div>
     </div>
-
     <div>
       <div class="modal-sec-lbl">TAGS</div>
-      <div class="modal-tags">${tagsHtml}</div>
+      <div class="modal-tags">${s.tags.map(t => `<span class="modal-tag">${t}</span>`).join('')}</div>
     </div>
-
     <div class="modal-stats">
       <div class="modal-stat">
-        <div class="modal-stat-val">★ ${s.stars}</div>
-        <div class="modal-stat-lbl">GITHUB STARS</div>
+        <div class="modal-stat-val">${fmtNum(s.stars)}</div>
+        <div class="modal-stat-lbl">STARS</div>
       </div>
       <div class="modal-stat">
-        <div class="modal-stat-val">${s.uses.toLocaleString()}</div>
-        <div class="modal-stat-lbl">AGENT USES</div>
+        <div class="modal-stat-val">${fmtNum(s.uses)}</div>
+        <div class="modal-stat-lbl">USES</div>
       </div>
       <div class="modal-stat">
         <div class="modal-stat-val">v${s.version}</div>
         <div class="modal-stat-lbl">VERSION</div>
       </div>
     </div>
-
     <div class="modal-price-row">
-      <div>
-        <div class="modal-price">${priceStr}</div>
-        <div class="modal-price-lbl">PER AGENT CALL</div>
-      </div>
-      <div class="pay-row">${payBadges || '<span class="pay-badge">FREE / OPEN SOURCE</span>'}</div>
-    </div>
-
-    <div class="modal-skillmd">
-      <div class="code-chrome" style="background:var(--surface2);">
-        <div class="chrome-dots"><span></span><span></span><span></span></div>
-        <div class="chrome-fname">SKILL.md</div>
-      </div>
-      <pre><code><span class="sy-sep">---</span>
-<span class="sy-key">name</span><span class="sy-col">:</span> <span class="sy-str">${s.name}</span>
-<span class="sy-key">version</span><span class="sy-col">:</span> <span class="sy-num">${s.version}</span>
-<span class="sy-key">price</span><span class="sy-col">:</span> <span class="sy-num">${s.price}</span>
-<span class="sy-key">x402</span><span class="sy-col">:</span>
-  <span class="sy-key">enabled</span><span class="sy-col">:</span> <span class="sy-str">${s.pay.includes('x402')}</span>
-  <span class="sy-key">network</span><span class="sy-col">:</span> <span class="sy-tag">base</span>
-  <span class="sy-key">asset</span><span class="sy-col">:</span> <span class="sy-tag">USDC</span>
-<span class="sy-key">tags</span><span class="sy-col">:</span>
-${s.tags.map(t=>`  <span class="sy-dash">-</span> <span class="sy-tag">${t}</span>`).join('\n')}
-<span class="sy-sep">---</span>
-<span class="sy-cmt"># ${s.name}</span>
-<span class="sy-cmt"># ${s.desc.slice(0, 60)}...</span></code></pre>
-      <div class="skillmd-foot">
-        <span>RAW SKILL.md</span>
-        <a href="${skillMdUrl}" target="_blank" rel="noopener">
-          VIEW ON GITHUB
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
-        </a>
+      <div class="modal-price-val">${s.price > 0 ? '$' + s.price.toFixed(2) : 'FREE'}</div>
+      <div class="modal-price-meta">
+        <div class="modal-price-lbl">PAYMENT</div>
+        <div class="modal-price-network">${s.price > 0 ? 'USDC · BASE L2' : 'OPEN SOURCE'}</div>
       </div>
     </div>
-
-    <div class="modal-actions">
-      ${s.price === 0
-        ? `<a class="btn-buy" href="${ghUrl}" target="_blank" rel="noopener" style="text-align:center;text-decoration:none;">
-            VIEW ON GITHUB (FREE)
-           </a>`
-        : `<button class="btn-buy" onclick="handleBuy('${s.id}')">
-            ${s.pay.includes('x402') ? '⚡ PAY WITH x402 (USDC · BASE)' : 'PURCHASE THIS SKILL'}
-           </button>`
-      }
-      <a class="btn-gh-view" href="${ghUrl}" target="_blank" rel="noopener">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-        </svg>
-        VIEW ON GITHUB
-      </a>
-    </div>`;
+    <div>
+      <div class="modal-sec-lbl">ACCEPTED PAYMENTS</div>
+      <div class="modal-tags">${payMethods}</div>
+    </div>
+    ${buyBtn}
+    <a class="btn-secondary" href="${ghUrl}" target="_blank" rel="noopener">VIEW SKILL DOCS ON GITHUB →</a>
+  `;
 
   document.getElementById('modalBackdrop').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1480,243 +1734,290 @@ function closeModalDirect() {
   document.getElementById('modalBackdrop').classList.remove('open');
   document.body.style.overflow = '';
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
 
+// ── PAY MODAL ─────────────────────────────────────────────
 function handleBuy(id) {
   const s = SKILLS.find(x => x.id === id);
   if (!s) return;
   const ghUrl = `https://github.com/${s.org}/${s.repo}/tree/main/${s.path}`;
-  // For now, direct to GitHub — x402 integration would go here
-  window.open(ghUrl, '_blank');
+
+  document.getElementById('payModalBody').innerHTML = `
+    <div class="pay-skill-name">${esc(s.name)}</div>
+
+    <div class="pay-amount-row">
+      <div class="pay-amount">$${s.price.toFixed(2)}</div>
+      <div class="pay-amount-meta">
+        <div class="pay-network-badge">USDC · BASE L2</div>
+        <div class="pay-currency">x402 PROTOCOL</div>
+      </div>
+    </div>
+
+    <button class="metamask-btn" id="metaMaskPayBtn" onclick="payWithMetaMask('${s.id}')">
+      🦊 PAY WITH METAMASK
+    </button>
+
+    <div class="pay-divider">OR SEND MANUALLY</div>
+
+    <div>
+      <div class="pay-lbl">SEND ${s.price.toFixed(2)} USDC (BASE) TO</div>
+      <div class="pay-addr-box" id="payAddrBox">${WALLET}</div>
+      <button class="pay-copy-btn" id="payCopyBtn" onclick="copyWallet()">
+        COPY WALLET ADDRESS
+      </button>
+    </div>
+
+    <div class="pay-note">
+      Send exactly <code>${s.price.toFixed(2)} USDC</code> on <code>Base</code> network.<br>
+      Then retry your request with:<br>
+      <code>X-Payment-Receipt: 0x{txHash}</code>
+    </div>
+
+    <a class="pay-github-btn" href="${ghUrl}" target="_blank" rel="noopener">
+      VIEW SKILL DOCS ON GITHUB →
+    </a>
+  `;
+
+  closeModalDirect();
+  setTimeout(() => {
+    document.getElementById('payBackdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }, 160);
 }
 
-// ── COPY INSTALL CMD ──────────────────────────────────────
-function copyInstall() {
-  const cmd = document.getElementById('installCmd').textContent;
-  navigator.clipboard.writeText(cmd).then(() => {
-    const btn = document.getElementById('copyBtn');
-    btn.classList.add('copied');
-    btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+function closePayModal(e) {
+  if (e.target === document.getElementById('payBackdrop')) closePayModalDirect();
+}
+function closePayModalDirect() {
+  document.getElementById('payBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function copyWallet() {
+  navigator.clipboard.writeText(WALLET).then(() => {
+    const btn = document.getElementById('payCopyBtn');
+    if (!btn) return;
+    btn.textContent = '✓ COPIED!';
+    btn.style.background = 'rgba(74,222,128,.2)';
+    btn.style.color = '#4ade80';
+    btn.style.borderColor = '#4ade80';
     setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.innerHTML = `<svg id="copyIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><rect x="9" y="9" width="13" height="13"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+      btn.textContent = 'COPY WALLET ADDRESS';
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
     }, 2000);
   });
 }
 
-// ── HAMBURGER ─────────────────────────────────────────────
-const hamburger = document.getElementById('hamburger');
-const mobileNav = document.getElementById('mobileNav');
-hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('open');
-  mobileNav.classList.toggle('open');
-});
-function closeMobileNav() {
-  hamburger.classList.remove('open');
-  mobileNav.classList.remove('open');
-}
-
-// ── GITHUB LIVE DATA ──────────────────────────────────────
-async function fetchGitHub() {
+// ── METAMASK WALLET ────────────────────────────────────────
+async function connectWallet() {
+  if (!window.ethereum) {
+    showToast('MetaMask not found — install it first!');
+    return;
+  }
   try {
-    // Fetch repo stats
-    const repoRes = await fetch('https://api.github.com/repos/charlesxbt/pikoclaw');
-    if (repoRes.ok) {
-      const repo = await repoRes.json();
-      const stars = repo.stargazers_count;
-      const starsEl = document.getElementById('ghStars');
-      starsEl.textContent = `★ ${stars}`;
-      starsEl.classList.add('loaded');
-      document.getElementById('statStars').textContent = stars;
-    }
-  } catch(e) {}
-
-  try {
-    // Fetch recent commits
-    const commitsRes = await fetch('https://api.github.com/repos/charlesxbt/pikoclaw/commits?per_page=4');
-    if (commitsRes.ok) {
-      const commits = await commitsRes.json();
-      const container = document.getElementById('ghCommits');
-      if (commits && commits.length) {
-        container.innerHTML = commits.map(c => {
-          const msg = c.commit.message.split('\n')[0].slice(0, 72);
-          const sha = c.sha.slice(0, 7);
-          const ago = timeAgo(new Date(c.commit.author.date));
-          const author = c.commit.author.name;
-          const url = c.html_url;
-          return `<a class="gh-commit" href="${url}" target="_blank" rel="noopener">
-            <div class="gh-commit-msg">${escHtml(msg)}</div>
-            <div class="gh-commit-meta">
-              <span class="gh-commit-sha">${sha}</span>
-              <span>${escHtml(author)}</span>
-              <span>${ago}</span>
-            </div>
-          </a>`;
-        }).join('');
-      } else {
-        container.innerHTML = `<div class="gh-commit-loading">NO COMMITS YET — <a href="https://github.com/charlesxbt/pikoclaw" style="color:var(--accent)" target="_blank">VIEW REPO ›</a></div>`;
-      }
-    } else {
-      showCommitFallback();
-    }
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    walletAddress = accounts[0];
+    updateWalletUI();
+    showToast('✓ WALLET CONNECTED: ' + shortAddr(walletAddress));
   } catch(e) {
-    showCommitFallback();
+    if (e.code !== 4001) showToast('Connection failed — try again');
   }
 }
 
-function showCommitFallback() {
-  document.getElementById('ghCommits').innerHTML =
-    `<a class="gh-commit" href="https://github.com/charlesxbt/pikoclaw/commits/main" target="_blank" rel="noopener">
-      <div class="gh-commit-msg">feat: initial PikoClaw repo — website + skills structure + x402 integration</div>
-      <div class="gh-commit-meta"><span class="gh-commit-sha">8d29a33</span><span>PikoClaw</span><span>just now</span></div>
-    </a>
-    <div class="gh-commit" style="flex:1;display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:.12em;color:var(--muted);">
-      <a href="https://github.com/charlesxbt/pikoclaw" target="_blank" rel="noopener" style="color:var(--accent);">VIEW REPO ON GITHUB ›</a>
-    </div>`;
-}
-
-function timeAgo(date) {
-  const secs = Math.floor((Date.now() - date) / 1000);
-  if (secs < 60) return `${secs}s ago`;
-  if (secs < 3600) return `${Math.floor(secs/60)}m ago`;
-  if (secs < 86400) return `${Math.floor(secs/3600)}h ago`;
-  return `${Math.floor(secs/86400)}d ago`;
-}
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ── x402 TERMINAL DEMO ────────────────────────────────────
-const SCENARIOS = {
-  user: {
-    label: 'USER FLOW',
-    steps: [
-      { type: 'cmd', text: 'curl https://raw.githubusercontent.com/charlesxbt/pikoclaw/main/agent.md' },
-      { type: 'out', cls: 'info', text: '# PikoClaw Agent Index' },
-      { type: 'out', cls: 'info', text: '# 12 skills available — USDC on Base' },
-      { type: 'out', cls: '', text: '' },
-      { type: 'cmd', text: 'open https://23998f7b.mogra.site' },
-      { type: 'out', cls: 'ok', text: '✓ Marketplace loaded' },
-      { type: 'out', cls: '', text: '' },
-      { type: 'cmd', text: '# Click any skill → VIEW ON GITHUB' },
-      { type: 'out', cls: 'info', text: '→ github.com/charlesxbt/pikoclaw/skills/...' },
-      { type: 'out', cls: 'ok', text: '✓ SKILL.md — full docs & API reference' },
-    ]
-  },
-  agent: {
-    label: 'AGENT FLOW',
-    steps: [
-      { type: 'cmd', text: 'curl https://api.pikoclaw.sh/skills/web-search' },
-      { type: 'out', cls: 'warn', text: 'HTTP 402 Payment Required' },
-      { type: 'out', cls: '', text: 'X-Payment-Amount: 0.01 USDC' },
-      { type: 'out', cls: '', text: 'X-Payment-Network: base' },
-      { type: 'out', cls: '', text: 'X-Payment-To: 0xPiko...ca11' },
-      { type: 'out', cls: '', text: '' },
-      { type: 'cmd', text: '# Agent submits on-chain payment' },
-      { type: 'out', cls: 'info', text: '→ Broadcasting USDC tx on Base...' },
-      { type: 'out', cls: 'ok', text: '✓ Confirmed in 2.1s · Fee: $0.0008' },
-      { type: 'out', cls: '', text: '' },
-      { type: 'cmd', text: 'curl ... -H "X-Payment-Receipt: 0xabc..."' },
-      { type: 'out', cls: 'ok', text: '✓ 200 OK — {"results": [...], "tokens": 142}' },
-    ]
-  },
-  sell: {
-    label: 'SELL FLOW',
-    steps: [
-      { type: 'cmd', text: 'cd my-skill && cat SKILL.md' },
-      { type: 'out', cls: 'info', text: 'name: My Awesome Skill' },
-      { type: 'out', cls: 'info', text: 'price: 0.05' },
-      { type: 'out', cls: 'info', text: 'x402: { enabled: true, network: base }' },
-      { type: 'out', cls: '', text: '' },
-      { type: 'cmd', text: 'git push origin main' },
-      { type: 'out', cls: 'ok', text: '✓ Pushed to github.com/you/my-skill' },
-      { type: 'out', cls: '', text: '' },
-      { type: 'cmd', text: '# Open GitHub Issue to list skill' },
-      { type: 'out', cls: 'info', text: '→ github.com/charlesxbt/pikoclaw/issues/new' },
-      { type: 'out', cls: 'ok', text: '✓ Listed in marketplace — earning now' },
-    ]
+function updateWalletUI() {
+  const btn   = document.getElementById('walletBtn');
+  const mbtn  = document.getElementById('mobileWalletBtn');
+  if (walletAddress) {
+    const label = shortAddr(walletAddress);
+    btn.textContent  = '● ' + label;
+    mbtn.textContent = '● CONNECTED: ' + label;
+    btn.classList.add('connected');
+    mbtn.classList.add('connected');
+  } else {
+    btn.textContent  = 'CONNECT WALLET';
+    mbtn.textContent = 'CONNECT WALLET';
+    btn.classList.remove('connected');
+    mbtn.classList.remove('connected');
   }
-};
-
-let currentScenario = 'user';
-let termTimeout = null;
-
-function runScenario(name) {
-  currentScenario = name;
-  document.querySelectorAll('.term-btn').forEach(b => {
-    b.classList.toggle('active', b.id === 'scenario' + name.charAt(0).toUpperCase() + name.slice(1));
-  });
-  if (termTimeout) clearTimeout(termTimeout);
-  playTerminal(SCENARIOS[name].steps);
 }
 
-function playTerminal(steps) {
-  const cmdEl = document.getElementById('termCmd');
-  const curEl = document.getElementById('termCursor');
-  const outEl = document.getElementById('termOutput');
-  cmdEl.textContent = '';
-  outEl.innerHTML = '';
-  curEl.style.display = 'inline-block';
+function shortAddr(addr) {
+  return addr.slice(0,6) + '...' + addr.slice(-4);
+}
 
-  let si = 0;
-  function nextStep() {
-    if (si >= steps.length) {
-      curEl.style.display = 'inline-block';
-      return;
-    }
-    const step = steps[si++];
-    if (step.type === 'cmd') {
-      curEl.style.display = 'none';
-      cmdEl.textContent = '';
-      let ci = 0;
-      function typeChar() {
-        if (ci < step.text.length) {
-          cmdEl.textContent += step.text[ci++];
-          termTimeout = setTimeout(typeChar, 28);
-        } else {
-          curEl.style.display = 'none';
-          termTimeout = setTimeout(nextStep, 320);
-        }
-      }
-      typeChar();
+async function switchToBase() {
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: BASE_ID }]
+    });
+  } catch(e) {
+    if (e.code === 4902 || e.code === -32603) {
+      // Chain not added yet — add it
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [{
+          chainId: BASE_ID,
+          chainName: 'Base',
+          nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+          rpcUrls: ['https://mainnet.base.org'],
+          blockExplorerUrls: ['https://basescan.org']
+        }]
+      });
     } else {
-      const line = document.createElement('div');
-      line.className = `term-out${step.cls ? ' ' + step.cls : ''}`;
-      line.textContent = step.text || '\u00a0';
-      outEl.appendChild(line);
-      // After cmd output, reset cmd line for next command
-      if (si < steps.length && steps[si].type === 'cmd') {
-        const newPrompt = document.createElement('div');
-        newPrompt.className = 'term-line';
-        newPrompt.innerHTML = `<span class="term-prompt">$</span><span class="term-cmd"></span>`;
-        outEl.appendChild(newPrompt);
-        const newCmdEl = newPrompt.querySelector('.term-cmd');
-        // redirect future cmd renders
-        document.getElementById('termCmd').style.display = 'none';
-      }
-      termTimeout = setTimeout(nextStep, 180);
+      throw e;
     }
   }
-
-  // Reset and start
-  cmdEl.style.display = 'inline';
-  nextStep();
 }
 
-// ── FADE IN ON SCROLL ─────────────────────────────────────
-const fadeEls = document.querySelectorAll('.fade');
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-}, { threshold: 0.08 });
-fadeEls.forEach(el => io.observe(el));
+async function payWithMetaMask(skillId) {
+  const s = SKILLS.find(x => x.id === skillId);
+  if (!s) return;
+
+  if (!window.ethereum) {
+    showToast('MetaMask not found — install it!');
+    return;
+  }
+
+  // Connect wallet if not yet
+  if (!walletAddress) {
+    await connectWallet();
+    if (!walletAddress) return;
+  }
+
+  const btn = document.getElementById('metaMaskPayBtn');
+  const setBtn = (txt, disabled) => {
+    if (btn) { btn.textContent = txt; btn.disabled = disabled; }
+  };
+
+  try {
+    setBtn('⏳ SWITCHING TO BASE...', true);
+    await switchToBase();
+
+    setBtn('⏳ CONFIRM IN METAMASK...', true);
+
+    // Build ERC-20 transfer calldata
+    // transfer(address,uint256) selector = 0xa9059cbb
+    const amountRaw = BigInt(Math.round(s.price * 1e6)); // USDC = 6 decimals
+    const toHex   = WALLET.replace('0x','').toLowerCase().padStart(64, '0');
+    const amtHex  = amountRaw.toString(16).padStart(64, '0');
+    const data    = '0xa9059cbb' + toHex + amtHex;
+
+    const txHash = await window.ethereum.request({
+      method: 'eth_sendTransaction',
+      params: [{
+        from: walletAddress,
+        to:   USDC_BASE,
+        data: data,
+      }]
+    });
+
+    showPaySuccess(txHash, s);
+    updateWalletUI();
+
+  } catch(e) {
+    if (e.code === 4001) {
+      setBtn('🦊 PAY WITH METAMASK', false); // user cancelled
+    } else {
+      showToast('TX failed: ' + (e.message || 'unknown error'));
+      setBtn('🦊 PAY WITH METAMASK', false);
+    }
+  }
+}
+
+function showPaySuccess(txHash, skill) {
+  const scanUrl = `https://basescan.org/tx/${txHash}`;
+  document.getElementById('payModalBody').innerHTML = `
+    <div class="pay-success-icon">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" stroke="#e85d04" stroke-width="3" fill="rgba(232,93,4,.1)"/>
+        <polyline points="18,33 28,43 46,23" stroke="#e85d04" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:var(--display); font-size:28px; color:var(--orange); letter-spacing:.06em;">PAYMENT SENT!</div>
+      <div style="font-size:11px; color:rgba(232,93,4,.6); margin-top:6px;">${esc(skill.name)} · $${skill.price.toFixed(2)} USDC on Base</div>
+    </div>
+    <div>
+      <div class="pay-lbl">TRANSACTION HASH</div>
+      <div class="pay-addr-box" style="font-size:9px;">${txHash}</div>
+      <a class="pay-copy-btn" href="${scanUrl}" target="_blank" rel="noopener"
+         style="display:block; text-align:center; text-decoration:none; padding:10px 14px;
+                background:var(--orange); color:var(--black); font-family:var(--mono);
+                font-size:10px; letter-spacing:.12em; font-weight:700; margin-top:2px;">
+        VIEW ON BASESCAN →
+      </a>
+    </div>
+    <div class="pay-note">
+      Use this receipt in your agent request:<br>
+      <code>X-Payment-Receipt: ${txHash}</code>
+    </div>
+  `;
+}
+
+// ── HERO CMD COPY ─────────────────────────────────────────
+function copyHeroCmd() {
+  navigator.clipboard.writeText('curl pikoclaw.sh/agent.md').then(() => {
+    const btn = document.getElementById('heroCmd');
+    const ico = document.getElementById('heroCopyIcon');
+    ico.innerHTML = `<polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2.5" fill="none"/>`;
+    btn.style.background = '#1a1a1a';
+    setTimeout(() => {
+      ico.innerHTML = `<rect x="9" y="9" width="13" height="13" rx="1"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>`;
+      btn.style.background = '';
+    }, 2000);
+  });
+}
+
+// ── MOBILE MENU ───────────────────────────────────────────
+function openMenu() {
+  document.getElementById('mobileMenu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── TOAST ─────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── ESC KEY ───────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModalDirect();
+    closePayModalDirect();
+    closeMenu();
+  }
+});
+
+// ── METAMASK EVENTS ───────────────────────────────────────
+if (window.ethereum) {
+  window.ethereum.on('accountsChanged', accs => {
+    walletAddress = accs[0] || null;
+    updateWalletUI();
+  });
+  window.ethereum.on('chainChanged', () => window.location.reload());
+  // Auto-reconnect if previously connected
+  window.ethereum.request({ method: 'eth_accounts' }).then(accs => {
+    if (accs[0]) { walletAddress = accs[0]; updateWalletUI(); }
+  }).catch(() => {});
+}
+
+// ── UTILS ─────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
 // ── INIT ──────────────────────────────────────────────────
-renderTags();
 renderGrid();
-fetchGitHub();
-// Delay terminal to avoid paint blocking
-setTimeout(() => runScenario('user'), 800);
-
+fetchGitHubStars();
 </script>
 </body>
 </html>
