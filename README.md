@@ -1,4 +1,6 @@
-# 🐾 PikoClaw
+<div align="center">
+  <img src="./website/assets/logo.svg" alt="PikoClaw" width="320" />
+</div>
 
 > **AI Agent Skills Marketplace** — buy & sell autonomous AI capabilities, powered by [x402](https://x402.org) payments on Base.
 
