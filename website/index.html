@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PikoClaw — AI Agent Skills Marketplace</title>
+  <meta name="description" content="PikoClaw is an AI agent skills marketplace. Buy and sell autonomous AI capabilities. Powered by x402 and GitHub.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --surface: #0f0f0f;
+      --surface2: #141414;
+      --border: #1e1e1e;
+      --border2: #2a2a2a;
+      --accent: #c8ff00;
+      --accent-dim: rgba(200,255,0,0.08);
+      --accent-dim2: rgba(200,255,0,0.14);
+      --blue: #3b82f6;
+      --blue-dim: rgba(59,130,246,0.10);
+      --green: #4ade80;
+      --green-dim: rgba(74,222,128,0.10);
+      --orange: #f97316;
+      --orange-dim: rgba(249,115,22,0.10);
+      --purple: #a78bfa;
+      --purple-dim: rgba(167,139,250,0.10);
+      --text: #ececec;
+      --muted: #666;
+      --dim: #3a3a3a;
+      --mono: 'IBM Plex Mono', 'Space Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    code {
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 1px 6px;
+      font-family: var(--mono);
+    }
+
+    /* ── STRIPE TOP ── */
+    .stripes {
+      height: 5px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--accent) 0px, var(--accent) 18px,
+        var(--bg) 18px, var(--bg) 24px
+      );
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 52px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,8,8,0.95);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+    }
+
+    .claw-mark {
+      width: 24px; height: 24px;
+    }
+
+    .wordmark { letter-spacing: 0.16em; }
+    .wordmark span { color: var(--accent); }
+
+    .nav-center {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      color: var(--muted);
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 22px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    .header-nav a:hover { color: var(--accent); }
+
+    .header-x402-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      color: var(--blue);
+      border: 1px solid rgba(59,130,246,0.3);
+      padding: 3px 8px;
+      background: var(--blue-dim);
+    }
+
+    .x402-pulse {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--blue);
+      animation: pulse402 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse402 {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.7); }
+    }
+
+    /* ── HERO ── */
+    .hero-section {
+      padding: 64px 28px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .hero-title {
+      font-size: 72px;
+      font-weight: 700;
+      line-height: 0.96;
+      letter-spacing: -0.02em;
+      margin-bottom: 36px;
+    }
+
+    .hero-title .accent { color: var(--accent); }
+    .hero-title .dim { color: var(--dim); }
+
+    .hero-sub-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .hero-left { flex: 1; min-width: 260px; }
+
+    .hero-cmd-label {
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .hero-cmd-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      padding: 10px 14px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .hero-cmd-box:hover { border-color: var(--accent); }
+
+    .hero-cmd-prompt { color: var(--accent); user-select: none; }
+    .hero-cmd-text { flex: 1; }
+
+    .hero-cmd-copy {
+      background: none; border: none;
+      color: var(--muted); cursor: pointer; padding: 0;
+    }
+
+    .hero-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 2;
+    }
+    .hero-desc em { color: var(--accent); font-style: normal; }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 160px;
+    }
+
+    .stat-block {
+      padding: 14px 20px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-val {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      background: var(--surface);
+    }
+
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marqueeScroll 50s linear infinite;
+    }
+
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .marquee-item {
+      padding-right: 0;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .msep { color: var(--dim); margin: 0 12px; }
+
+    /* ── MAIN WRAP ── */
+    .main-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 28px;
+    }
+
+    .works-with {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .works-label {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      color: var(--dim);
+    }
+
+    .agent-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .agent-chip {
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      padding: 3px 9px;
+      border: 1px solid var(--border2);
+      color: var(--muted);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .section-label {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      color: var(--dim);
+    }
+
+    /* ── SKILLS GRID ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    @media (max-width: 900px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .skills-grid { grid-template-columns: 1fr; } }
+
+    .skill-card {
+      position: relative;
+      background: var(--bg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: block;
+    }
+    .skill-card:hover { background: var(--surface); }
+    .skill-card:hover .skill-rail { opacity: 1; }
+
+    .skill-rail {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .skill-pinned {
+      position: absolute;
+      top: 12px; right: 12px;
+      font-size: 8px; letter-spacing: 0.18em;
+      color: var(--accent);
+      border: 1px solid var(--accent-dim2);
+      padding: 2px 7px;
+    }
+
+    .skill-inner { padding: 20px; }
+
+    .skill-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .skill-name {
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      margin-bottom: 3px;
+    }
+
+    .skill-org {
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .view-button {
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .skill-card:hover .view-button { opacity: 1; }
+
+    .skill-rows {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 6px 10px;
+      margin-bottom: 14px;
+    }
+
+    .sk {
+      font-size: 8px;
+      letter-spacing: 0.16em;
+      color: var(--dim);
+      padding-top: 2px;
+    }
+
+    .skill-description {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .skill-tags {
+      font-size: 10px;
+      color: var(--dim);
+    }
+
+    .skill-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .badges { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    .badge {
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      padding: 2px 7px;
+      border: 1px solid var(--border2);
+      color: var(--dim);
+    }
+    .badge.free { border-color: rgba(74,222,128,0.3); color: var(--green); }
+    .badge.new { border-color: var(--accent-dim2); color: var(--accent); }
+    .badge.x402b { border-color: rgba(59,130,246,0.4); color: var(--blue); background: var(--blue-dim); }
+
+    .skill-price {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* ── x402 PAY BUTTON ── */
+    .skill-pay-btn {
+      margin-top: 10px;
+      width: 100%;
+      background: none;
+      border: 1px solid rgba(59,130,246,0.3);
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      padding: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .skill-pay-btn:hover {
+      background: var(--blue-dim);
+      border-color: var(--blue);
+    }
+
+    /* ── x402 SECTION ── */
+    .x402-section {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .x402-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 28px;
+    }
+
+    .x402-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 32px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .x402-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+
+    .x402-title {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .x402-title .hl { color: var(--blue); }
+
+    .x402-sub {
+      max-width: 480px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    /* ── FLOW DIAGRAM ── */
+    .x402-flow {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr 40px 1fr 40px 1fr;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 48px;
+      overflow-x: auto;
+    }
+
+    @media (max-width: 800px) {
+      .x402-flow {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .flow-arrow { transform: rotate(90deg); justify-self: center; }
+    }
+
+    .flow-node {
+      border: 1px solid var(--border2);
+      background: var(--bg);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .flow-node.active { border-color: var(--blue); background: var(--blue-dim); }
+    .flow-node.paid { border-color: var(--green); background: var(--green-dim); }
+    .flow-node.response { border-color: var(--accent); background: var(--accent-dim); }
+
+    .flow-icon {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .flow-label {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .flow-code {
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .flow-node.active .flow-code { color: var(--blue); }
+    .flow-node.paid .flow-code { color: var(--green); }
+    .flow-node.response .flow-code { color: var(--accent); }
+
+    .flow-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--dim);
+      font-size: 18px;
+    }
+
+    /* ── TERMINAL DEMO ── */
+    .x402-terminal-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 700px) { .x402-terminal-wrap { grid-template-columns: 1fr; } }
+
+    .x402-terminal {
+      background: #050505;
+      border: none;
+      font-family: var(--mono);
+      font-size: 11px;
+      overflow: hidden;
+    }
+
+    .term-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .term-dots { display: flex; gap: 5px; }
+    .term-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .term-dot.r { background: #ff5f57; }
+    .term-dot.y { background: #febc2e; }
+    .term-dot.g { background: #28c840; }
+
+    .term-title {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--dim);
+      margin-left: 4px;
+    }
+
+    .term-body {
+      padding: 16px;
+      min-height: 260px;
+      line-height: 1.8;
+    }
+
+    .term-line { display: flex; gap: 6px; margin-bottom: 2px; }
+    .term-prompt { color: var(--accent); user-select: none; flex-shrink: 0; }
+    .term-cmd { color: var(--text); }
+    .term-out { color: var(--muted); }
+    .term-out.status402 { color: var(--orange); }
+    .term-out.status200 { color: var(--green); }
+    .term-out.key { color: var(--blue); }
+    .term-out.val { color: #fbbf24; }
+    .term-out.usdc { color: var(--accent); }
+    .term-cursor {
+      display: inline-block;
+      width: 7px; height: 13px;
+      background: var(--accent);
+      animation: blink 1.1s step-end infinite;
+      vertical-align: text-bottom;
+    }
+
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .term-separator { height: 1px; background: var(--border); margin: 10px 0; }
+
+    /* ── x402 INTERACTIVE MODAL ── */
+    .x402-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .x402-modal-overlay.open { display: flex; }
+
+    .x402-modal {
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      width: 100%;
+      max-width: 560px;
+      font-family: var(--mono);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .modal-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+    }
+
+    .modal-title .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--blue);
+      animation: pulse402 1.8s ease-in-out infinite;
+    }
+
+    .modal-close {
+      background: none; border: none;
+      color: var(--muted); cursor: pointer;
+      font-size: 16px; font-family: var(--mono);
+    }
+
+    .modal-body { padding: 18px; }
+
+    .modal-skill-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      margin-bottom: 18px;
+    }
+
+    .modal-skill-name {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .modal-skill-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .modal-network {
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      color: var(--blue);
+      margin-top: 2px;
+    }
+
+    .modal-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 18px;
+    }
+
+    .modal-step {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0.3;
+      transition: opacity 0.3s;
+    }
+    .modal-step.done { opacity: 1; }
+    .modal-step.active { opacity: 1; }
+    .modal-step:last-child { border-bottom: none; }
+
+    .mstep-num {
+      width: 22px; height: 22px;
+      border: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; letter-spacing: 0.12em;
+      flex-shrink: 0;
+      color: var(--dim);
+    }
+
+    .modal-step.done .mstep-num {
+      background: var(--green);
+      border-color: var(--green);
+      color: #000;
+    }
+
+    .modal-step.active .mstep-num {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .mstep-content { flex: 1; }
+
+    .mstep-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      margin-bottom: 2px;
+    }
+
+    .mstep-detail {
+      font-size: 10px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .mstep-detail.code { color: var(--blue); }
+    .mstep-detail.usdc { color: var(--accent); }
+    .mstep-detail.ok { color: var(--green); }
+
+    .modal-action-bar {
+      display: flex;
+      gap: 8px;
+    }
+
+    .modal-btn {
+      flex: 1;
+      background: var(--blue);
+      border: none;
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      padding: 11px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .modal-btn:hover { opacity: 0.85; }
+    .modal-btn.secondary {
+      background: none;
+      border: 1px solid var(--border2);
+      color: var(--muted);
+    }
+    .modal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .modal-tx {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: var(--green-dim);
+      border: 1px solid rgba(74,222,128,0.3);
+      font-size: 10px;
+      color: var(--green);
+      display: none;
+      word-break: break-all;
+    }
+    .modal-tx.show { display: block; }
+
+    /* ── LIVE FEED ── */
+    .x402-feed {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .feed-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .feed-title {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .feed-live {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .feed-live-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 2s step-end infinite;
+    }
+
+    .feed-list {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .feed-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 10px;
+      animation: feedSlide 0.4s ease-out;
+    }
+
+    @keyframes feedSlide {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feed-agent { color: var(--muted); }
+    .feed-agent span { color: var(--text); }
+    .feed-amount { color: var(--accent); font-weight: 700; }
+    .feed-time { color: var(--dim); font-size: 9px; }
+    .feed-hash { color: var(--blue); font-size: 9px; margin-left: 8px; }
+
+    /* ── x402 CODE BLOCK ── */
+    .x402-code-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+    }
+
+    @media (max-width: 700px) { .x402-code-grid { grid-template-columns: 1fr; } }
+
+    .x402-code-block {
+      background: #050505;
+    }
+
+    .code-titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .code-filename {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .code-lang {
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      color: var(--dim);
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+    }
+
+    .code-content {
+      padding: 16px;
+      font-size: 11px;
+      line-height: 1.85;
+      overflow-x: auto;
+    }
+
+    .sy-sep { color: var(--dim); }
+    .sy-key { color: var(--blue); }
+    .sy-colon { color: var(--muted); }
+    .sy-str { color: #fbbf24; }
+    .sy-num { color: var(--accent); }
+    .sy-dash { color: var(--dim); }
+    .sy-tag { color: var(--muted); }
+    .sy-comment { color: var(--dim); }
+    .sy-fn { color: var(--purple); }
+    .sy-param { color: var(--orange); }
+    .sy-path { color: var(--green); }
+
+    /* ── VALUE PROP ── */
+    .vp-section {
+      border-top: 1px solid var(--border);
+    }
+
+    .vp-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 28px;
+    }
+
+    .vp-header {
+      margin-bottom: 36px;
+    }
+
+    .vp-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      color: var(--dim);
+      margin-bottom: 10px;
+    }
+
+    .vp-headline {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .vp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+    }
+
+    @media (max-width: 700px) { .vp-grid { grid-template-columns: 1fr; } }
+
+    .vp-card {
+      background: var(--bg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .vp-num {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--dim);
+    }
+
+    .vp-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+    }
+
+    .vp-text {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .vp-tagline {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      color: var(--dim);
+      margin-top: 4px;
+    }
+
+    /* ── ONBOARD / GET LISTED ── */
+    .onboard-section {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .onboard-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 28px;
+    }
+
+    .onboard-lead-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 700px) { .onboard-lead-wrap { grid-template-columns: 1fr; } }
+
+    .onboard-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      color: var(--dim);
+      margin-bottom: 10px;
+    }
+
+    .onboard-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .onboard-sub {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .onboard-code {
+      border: 1px solid var(--border2);
+      overflow: hidden;
+    }
+
+    .code-chrome {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-chrome-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .code-chrome-dots span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--border2);
+    }
+    .code-chrome-dots span:nth-child(1) { background: #ff5f57; }
+    .code-chrome-dots span:nth-child(2) { background: #febc2e; }
+    .code-chrome-dots span:nth-child(3) { background: #28c840; }
+
+    .code-chrome-filename {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    .code-body {
+      padding: 18px;
+      background: #050505;
+      font-size: 11.5px;
+      line-height: 1.85;
+      overflow-x: auto;
+    }
+
+    .code-note {
+      padding: 10px 14px;
+      font-size: 10px;
+      color: var(--dim);
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .steps-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .step:last-child { border-bottom: none; }
+    .step:hover { background: var(--surface2); }
+
+    .step-num {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--dim);
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 5px;
+    }
+
+    .step p {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── DIVIDER ── */
+    .divider-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .divider-bar {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider-txt {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--dim);
+    }
+
+    /* ── APP CARDS ── */
+    .app-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) { .app-cards-grid { grid-template-columns: 1fr; } }
+
+    .app-card {
+      background: var(--bg);
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: background 0.15s;
+    }
+    .app-card:hover { background: var(--surface); }
+    .app-card.soon { opacity: 0.5; pointer-events: none; }
+
+    .app-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-icon {
+      width: 38px; height: 38px;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      color: #000;
+      flex-shrink: 0;
+    }
+
+    .app-icon.alt {
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      color: var(--muted);
+    }
+
+    .app-name { font-weight: 700; font-size: 13px; }
+    .app-type { font-size: 10px; letter-spacing: 0.14em; color: var(--muted); margin-top: 2px; }
+
+    .app-live {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 10px; letter-spacing: 0.12em; color: #4ade80;
+    }
+
+    .live-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%; background: #4ade80;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    .soon-badge {
+      margin-left: auto;
+      font-size: 9px; letter-spacing: 0.14em;
+      padding: 3px 9px;
+      border: 1px solid var(--dim); color: var(--dim);
+    }
+
+    .app-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .app-foot {
+      margin-top: auto;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .app-meta {
+      display: flex; gap: 8px; align-items: center;
+      font-size: 9px; letter-spacing: 0.12em; color: var(--dim);
+    }
+
+    .app-meta-sep { color: var(--accent); }
+
+    .app-install-btn {
+      font-size: 10px; letter-spacing: 0.12em; color: var(--accent);
+      cursor: pointer;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--dim);
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      .header-nav { display: none; }
+      .nav-center { display: none; }
+      .hero-title { font-size: 52px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .hero-right { width: 100%; flex-direction: row; }
+    }
+
+    /* ── SCROLL FADE IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── x402 PAYMENT MODAL ── -->
+<div class="x402-modal-overlay" id="payModal">
+  <div class="x402-modal">
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="dot"></div>
+        <span>X402 PAYMENT — BASE MAINNET</span>
+      </div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-skill-row">
+        <div>
+          <div class="modal-skill-name" id="modalSkillName">BROWSE AGENT</div>
+          <div class="modal-network">BASE L2 · USDC · ERC-20</div>
+        </div>
+        <div style="text-align:right">
+          <div class="modal-skill-price" id="modalPrice">$0.04</div>
+          <div style="font-size:9px;color:var(--muted);letter-spacing:.12em;" id="modalUsdc">40,000 μUSDC</div>
+        </div>
+      </div>
+
+      <div class="modal-steps">
+        <div class="modal-step" id="mstep1">
+          <div class="mstep-num">1</div>
+          <div class="mstep-content">
+            <div class="mstep-label">AGENT REQUESTS SKILL</div>
+            <div class="mstep-detail code" id="mstep1detail">GET /skills/browse-agent HTTP/1.1</div>
+          </div>
+        </div>
+        <div class="modal-step" id="mstep2">
+          <div class="mstep-num">2</div>
+          <div class="mstep-content">
+            <div class="mstep-label">SERVER RETURNS 402</div>
+            <div class="mstep-detail">HTTP/1.1 402 Payment Required</div>
+          </div>
+        </div>
+        <div class="modal-step" id="mstep3">
+          <div class="mstep-num">3</div>
+          <div class="mstep-content">
+            <div class="mstep-label">AGENT PAYS USDC ON BASE</div>
+            <div class="mstep-detail usdc" id="mstep3detail">Transferring 0.04 USDC → 0xpiko...f3a2</div>
+          </div>
+        </div>
+        <div class="modal-step" id="mstep4">
+          <div class="mstep-num">4</div>
+          <div class="mstep-content">
+            <div class="mstep-label">ACCESS GRANTED</div>
+            <div class="mstep-detail ok" id="mstep4detail">HTTP/1.1 200 OK · skill delivered</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-action-bar">
+        <button class="modal-btn" id="modalPayBtn">SIMULATE x402 PAYMENT</button>
+        <button class="modal-btn secondary" id="modalCancelBtn">CANCEL</button>
+      </div>
+
+      <div class="modal-tx" id="modalTx"></div>
+    </div>
+  </div>
+</div>
+
+<div class="stripes"></div>
+
+<!-- ── HEADER ── -->
+<header>
+  <a class="logo" href="/">
+    <div class="claw-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 20 C5 20 7 13 10 10 C10 10 8 6 10 4 C12 2 13 5 12 8 C15 6 18 7 18 10 C18 13 15 14 13 13 C11 15 11 20 11 20" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M8 19 C8 19 9 15 11 13" stroke="#c8ff00" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+        <path d="M14 19 C14 19 13 15 12 13" stroke="#c8ff00" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+      </svg>
+    </div>
+    <span class="wordmark">PIKO<span>CLAW</span></span>
+  </a>
+  <div class="nav-center">AGENTIC COMMERCE</div>
+  <nav class="header-nav">
+    <a href="#skills">SKILLS</a>
+    <a href="#x402">X402</a>
+    <a href="#sell">SELL</a>
+    <a href="#catalog">CATALOG</a>
+    <a href="#apps">APPS</a>
+    <div class="header-x402-badge">
+      <div class="x402-pulse"></div>
+      HTTP 402 LIVE
+    </div>
+  </nav>
+</header>
+
+<!-- ── HERO ── -->
+<div class="hero-section fade-in">
+  <div class="hero-eyebrow">AI AGENT SKILLS MARKETPLACE</div>
+  <h1 class="hero-title">AI AGENT<br><span class="accent">SKILLS</span><br><span class="dim">MARKETPLACE</span></h1>
+
+  <div class="hero-sub-row">
+    <div class="hero-left">
+      <div class="hero-cmd-label">SEND YOUR AGENT</div>
+      <div class="hero-cmd-box" id="cmdBox">
+        <span class="hero-cmd-prompt">$</span>
+        <span class="hero-cmd-text">curl pikoclaw.sh/agent.md</span>
+        <button class="hero-cmd-copy" id="copyBtn" title="Copy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+            <rect x="9" y="9" width="13" height="13"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+      </div>
+      <p class="hero-desc">
+        Buy and sell autonomous AI skills.<br>
+        Your agent shops. You build.<br>
+        <em>Powered by x402 · GitHub Native · USDC on Base</em>
+      </p>
+    </div>
+
+    <div class="hero-right">
+      <div class="stat-block">
+        <div class="stat-val" id="agentCount">2,841</div>
+        <div class="stat-label">AGENTS ACTIVE</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-val">138</div>
+        <div class="stat-label">SKILLS LISTED</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-val">$0.03</div>
+        <div class="stat-label">AVG. SKILL PRICE</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-val" id="txCount">4,291</div>
+        <div class="stat-label">x402 TXS TODAY</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">PIKOCLAW <span class="msep">///</span> AI AGENT SKILLS <span class="msep">///</span> BUY &amp; SELL <span class="msep">///</span> DEPLOY ON DEMAND <span class="msep">///</span> X402 PAYMENTS <span class="msep">///</span> HTTP 402 PAYMENT REQUIRED <span class="msep">///</span> GITHUB NATIVE <span class="msep">///</span> PLUG &amp; PLAY <span class="msep">///</span> NO SIGN-UP REQUIRED <span class="msep">///</span> PERMISSIONLESS <span class="msep">///</span> USDC ON BASE <span class="msep">///</span> AGENT AUTONOMY <span class="msep">///</span> SKILL ECONOMY <span class="msep">///</span>&nbsp;</span>
+    <span class="marquee-item">PIKOCLAW <span class="msep">///</span> AI AGENT SKILLS <span class="msep">///</span> BUY &amp; SELL <span class="msep">///</span> DEPLOY ON DEMAND <span class="msep">///</span> X402 PAYMENTS <span class="msep">///</span> HTTP 402 PAYMENT REQUIRED <span class="msep">///</span> GITHUB NATIVE <span class="msep">///</span> PLUG &amp; PLAY <span class="msep">///</span> NO SIGN-UP REQUIRED <span class="msep">///</span> PERMISSIONLESS <span class="msep">///</span> USDC ON BASE <span class="msep">///</span> AGENT AUTONOMY <span class="msep">///</span> SKILL ECONOMY <span class="msep">///</span>&nbsp;</span>
+  </div>
+</div>
+
+<!-- ── SKILLS ── -->
+<div class="main-wrap" id="skills">
+
+  <div class="works-with">
+    <span class="works-label">WORKS WITH:</span>
+    <div class="agent-chips">
+      <span class="agent-chip">CLAUDE 3.7</span>
+      <span class="agent-chip">GPT-4O</span>
+      <span class="agent-chip">GEMINI 2.0</span>
+      <span class="agent-chip">LLAMA 3.3</span>
+      <span class="agent-chip">MISTRAL</span>
+      <span class="agent-chip">QWEN 2.5</span>
+      <span class="agent-chip">DEEPSEEK R1</span>
+      <span class="agent-chip">ANY MCP</span>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <span class="section-label">FEATURED SKILLS</span>
+    <a href="#catalog" style="font-size:10px;letter-spacing:.12em;color:var(--accent);">BROWSE ALL ›</a>
+  </div>
+
+  <div class="skills-grid">
+
+    <!-- Skill: BrowseAgent -->
+    <div class="skill-card" data-skill="BROWSE AGENT" data-price="0.04" data-slug="browse-agent">
+      <div class="skill-rail"></div>
+      <span class="skill-pinned">PINNED</span>
+      <div class="skill-inner">
+        <div class="skill-head">
+          <div>
+            <div class="skill-name">BROWSE AGENT</div>
+            <div class="skill-org">pikoclaw/browse-agent</div>
+          </div>
+          <div class="view-button">VIEW ›</div>
+        </div>
+        <div class="skill-rows">
+          <span class="sk">DESC</span>
+          <div class="skill-description">Autonomous browser. Navigate pages, fill forms, click buttons, extract data — no human needed. Playwright-powered with anti-detection.</div>
+          <span class="sk">TAGS</span>
+          <div class="skill-tags">browser · playwright · scraping · automation</div>
+        </div>
+        <div class="skill-footer">
+          <div class="badges">
+            <span class="badge x402b">X402</span>
+            <span class="badge new">NEW</span>
+          </div>
+          <div class="skill-price">$0.04</div>
+        </div>
+        <button class="skill-pay-btn" onclick="openPayModal(this)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          TRY x402 PAYMENT
+        </button>
+      </div>
+    </div>
+
+    <!-- Skill: CodeReview -->
+    <div class="skill-card" data-skill="CODE REVIEW" data-price="0.10" data-slug="code-review">
+      <div class="skill-rail"></div>
+      <div class="skill-inner">
+        <div class="skill-head">
+          <div>
+            <div class="skill-name">CODE REVIEW</div>
+            <div class="skill-org">pikoclaw/code-review</div>
+          </div>
+          <div class="view-button">VIEW ›</div>
+        </div>
+        <div class="skill-rows">
+          <span class="sk">DESC</span>
+          <div class="skill-description">Security analysis, performance audit, and style enforcement. Returns structured JSON with severity levels and line-level fix suggestions.</div>
+          <span class="sk">TAGS</span>
+          <div class="skill-tags">security · refactor · code · audit</div>
+        </div>
+        <div class="skill-footer">
+          <div class="badges">
+            <span class="badge x402b">X402</span>
+            <span class="badge">PAYPAL</span>
+          </div>
+          <div class="skill-price">$0.10</div>
+        </div>
+        <button class="skill-pay-btn" onclick="openPayModal(this)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          TRY x402 PAYMENT
+        </button>
+      </div>
+    </div>
+
+    <!-- Skill: MemoryStore -->
+    <div class="skill-card" data-skill="MEMORY STORE" data-price="0.00" data-slug="mem-store">
+      <div class="skill-rail"></div>
+      <div class="skill-inner">
+        <div class="skill-head">
+          <div>
+            <div class="skill-name">MEMORY STORE</div>
+            <div class="skill-org">pikoclaw/mem-store</div>
+          </div>
+          <div class="view-button">VIEW ›</div>
+        </div>
+        <div class="skill-rows">
+          <span class="sk">DESC</span>
+          <div class="skill-description">Persistent vector memory across agent sessions. Store, search, and retrieve long-term context with semantic similarity. Supports any embedding model.</div>
+          <span class="sk">TAGS</span>
+          <div class="skill-tags">memory · vector · embeddings · context</div>
+        </div>
+        <div class="skill-footer">
+          <div class="badges">
+            <span class="badge free">FREE</span>
+          </div>
+          <div class="skill-price">$0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skill: NL2SQL -->
+    <div class="skill-card" data-skill="NL → SQL" data-price="0.03" data-slug="nl2sql">
+      <div class="skill-rail"></div>
+      <div class="skill-inner">
+        <div class="skill-head">
+          <div>
+            <div class="skill-name">NL → SQL</div>
+            <div class="skill-org">pikoclaw/nl2sql</div>
+          </div>
+          <div class="view-button">VIEW ›</div>
+        </div>
+        <div class="skill-rows">
+          <span class="sk">DESC</span>
+          <div class="skill-description">Convert natural language to optimized SQL. Schema-aware. Supports PostgreSQL, MySQL, SQLite, BigQuery. Returns query + explanation.</div>
+          <span class="sk">TAGS</span>
+          <div class="skill-tags">sql · database · nl2sql · query</div>
+        </div>
+        <div class="skill-footer">
+          <div class="badges">
+            <span class="badge x402b">X402</span>
+          </div>
+          <div class="skill-price">$0.03</div>
+        </div>
+        <button class="skill-pay-btn" onclick="openPayModal(this)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          TRY x402 PAYMENT
+        </button>
+      </div>
+    </div>
+
+    <!-- Skill: VisionExtract -->
+    <div class="skill-card" data-skill="VISION EXTRACT" data-price="0.08" data-slug="vision">
+      <div class="skill-rail"></div>
+      <div class="skill-inner">
+        <div class="skill-head">
+          <div>
+            <div class="skill-name">VISION EXTRACT</div>
+            <div class="skill-org">pikoclaw/vision</div>
+          </div>
+          <div class="view-button">VIEW ›</div>
+        </div>
+        <div class="skill-rows">
+          <span class="sk">DESC</span>
+          <div class="skill-description">Object detection, OCR, layout parsing, and structured data extraction from images and PDFs. Returns clean JSON with bounding boxes.</div>
+          <span class="sk">TAGS</span>
+          <div class="skill-tags">vision · ocr · multimodal · pdf</div>
+        </div>
+        <div class="skill-footer">
+          <div class="badges">
+            <span class="badge x402b">X402</span>
+            <span class="badge">PAYPAL</span>
+          </div>
+          <div class="skill-price">$0.08</div>
+        </div>
+        <button class="skill-pay-btn" onclick="openPayModal(this)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          TRY x402 PAYMENT
+        </button>
+      </div>
+    </div>
+
+    <!-- Skill: APIChain -->
+    <div class="skill-card" data-skill="API CHAIN" data-price="0.00" data-slug="api-chain">
+      <div class="skill-rail"></div>
+      <div class="skill-inner">
+        <div class="skill-head">
+          <div>
+            <div class="skill-name">API CHAIN</div>
+            <div class="skill-org">pikoclaw/api-chain</div>
+          </div>
+          <div class="view-button">VIEW ›</div>
+        </div>
+        <div class="skill-rows">
+          <span class="sk">DESC</span>
+          <div class="skill-description">Compose multi-step API workflows. Retry logic, OAuth handling, rate limiting, and response normalization. Describe the chain in YAML.</div>
+          <span class="sk">TAGS</span>
+          <div class="skill-tags">api · orchestration · http · workflow</div>
+        </div>
+        <div class="skill-footer">
+          <div class="badges">
+            <span class="badge free">FREE</span>
+          </div>
+          <div class="skill-price">$0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skill: DataClean -->
+    <div class="skill-card" data-skill="DATA CLEANER" data-price="0.05" data-slug="data-clean">
+      <div class="skill-rail"></div>
+      <div class="skill-inner">
+        <div class="skill-head">
+          <div>
+            <div class="skill-name">DATA CLEANER</div>
+            <div class="skill-org">pikoclaw/data-clean</div>
+          </div>
+          <div class="view-button">VIEW ›</div>
+        </div>
+        <div class="skill-rows">
+          <span class="sk">DESC</span>
+          <div class="skill-description">Normalize, deduplicate, and validate datasets. Infer schema, fix types, fill nulls. Works with CSV, JSON, Parquet inputs.</div>
+          <span class="sk">TAGS</span>
+          <div class="skill-tags">data · etl · csv · cleaning</div>
+        </div>
+        <div class="skill-footer">
+          <div class="badges">
+            <span class="badge x402b">X402</span>
+          </div>
+          <div class="skill-price">$0.05</div>
+        </div>
+        <button class="skill-pay-btn" onclick="openPayModal(this)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          TRY x402 PAYMENT
+        </button>
+      </div>
+    </div>
+
+    <!-- Skill: EmailDraft -->
+    <div class="skill-card" data-skill="EMAIL DRAFT" data-price="0.02" data-slug="email-draft">
+      <div class="skill-rail"></div>
+      <div class="skill-inner">
+        <div class="skill-head">
+          <div>
+            <div class="skill-name">EMAIL DRAFT</div>
+            <div class="skill-org">pikoclaw/email-draft</div>
+          </div>
+          <div class="view-button">VIEW ›</div>
+        </div>
+        <div class="skill-rows">
+          <span class="sk">DESC</span>
+          <div class="skill-description">Generate professional, context-aware emails. Cold outreach, follow-ups, investor updates, customer replies. Tone-adaptive. Multilingual.</div>
+          <span class="sk">TAGS</span>
+          <div class="skill-tags">email · copywriting · outreach · nlp</div>
+        </div>
+        <div class="skill-footer">
+          <div class="badges">
+            <span class="badge x402b">X402</span>
+            <span class="badge">PAYPAL</span>
+          </div>
+          <div class="skill-price">$0.02</div>
+        </div>
+        <button class="skill-pay-btn" onclick="openPayModal(this)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          TRY x402 PAYMENT
+        </button>
+      </div>
+    </div>
+
+    <!-- Skill: GitOps -->
+    <div class="skill-card" data-skill="GIT OPS" data-price="0.07" data-slug="git-ops">
+      <div class="skill-rail"></div>
+      <div class="skill-inner">
+        <div class="skill-head">
+          <div>
+            <div class="skill-name">GIT OPS</div>
+            <div class="skill-org">pikoclaw/git-ops</div>
+          </div>
+          <div class="view-button">VIEW ›</div>
+        </div>
+        <div class="skill-rows">
+          <span class="sk">DESC</span>
+          <div class="skill-description">Agents that read repos, write code, open PRs, and review diffs. Full GitHub API coverage. Scoped access, auditable actions.</div>
+          <span class="sk">TAGS</span>
+          <div class="skill-tags">github · pr · ci · devops</div>
+        </div>
+        <div class="skill-footer">
+          <div class="badges">
+            <span class="badge x402b">X402</span>
+          </div>
+          <div class="skill-price">$0.07</div>
+        </div>
+        <button class="skill-pay-btn" onclick="openPayModal(this)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          TRY x402 PAYMENT
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ── MARQUEE 2 ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track" style="animation-direction:reverse;animation-duration:40s;">
+    <span class="marquee-item">BROWSE AGENT <span class="msep">///</span> CODE REVIEW <span class="msep">///</span> MEMORY STORE <span class="msep">///</span> NL→SQL <span class="msep">///</span> VISION EXTRACT <span class="msep">///</span> API CHAIN <span class="msep">///</span> DATA CLEANER <span class="msep">///</span> EMAIL DRAFT <span class="msep">///</span> GIT OPS <span class="msep">///</span> VOICE AGENT <span class="msep">///</span> CRYPTO WALLET <span class="msep">///</span> WEB SEARCH <span class="msep">///</span>&nbsp;</span>
+    <span class="marquee-item">BROWSE AGENT <span class="msep">///</span> CODE REVIEW <span class="msep">///</span> MEMORY STORE <span class="msep">///</span> NL→SQL <span class="msep">///</span> VISION EXTRACT <span class="msep">///</span> API CHAIN <span class="msep">///</span> DATA CLEANER <span class="msep">///</span> EMAIL DRAFT <span class="msep">///</span> GIT OPS <span class="msep">///</span> VOICE AGENT <span class="msep">///</span> CRYPTO WALLET <span class="msep">///</span> WEB SEARCH <span class="msep">///</span>&nbsp;</span>
+  </div>
+</div>
+
+<!-- ── x402 PROTOCOL SECTION ── -->
+<div class="x402-section fade-in" id="x402">
+  <div class="x402-inner">
+
+    <div class="x402-header">
+      <div>
+        <div class="x402-eyebrow">PROTOCOL · HTTP 402</div>
+        <div class="x402-title">POWERED BY<br><span class="hl">x402</span></div>
+      </div>
+      <div class="x402-sub">
+        x402 adalah open protocol dari Coinbase yang menghidupkan HTTP status code 402 yang selama ini "reserved for future use" sejak 1990-an. Setiap skill di PikoClaw bisa dibayar langsung oleh AI agent — tanpa login, tanpa checkout, tanpa kartu kredit. Agent request → server balik 402 → agent bayar USDC di Base → akses granted. Semua dalam milidetik.
+      </div>
+    </div>
+
+    <!-- Flow Diagram -->
+    <div class="x402-flow">
+      <div class="flow-node active">
+        <div class="flow-icon">🤖</div>
+        <div class="flow-label">AI AGENT</div>
+        <div class="flow-code">GET /skill</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-icon">🔒</div>
+        <div class="flow-label">SERVER</div>
+        <div class="flow-code" style="color:var(--orange)">HTTP 402</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node paid">
+        <div class="flow-icon">💰</div>
+        <div class="flow-label">BASE L2</div>
+        <div class="flow-code">USDC TX</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node response">
+        <div class="flow-icon">✅</div>
+        <div class="flow-label">ACCESS</div>
+        <div class="flow-code">HTTP 200</div>
+      </div>
+    </div>
+
+    <!-- Terminal + Live Feed -->
+    <div class="x402-terminal-wrap">
+      <!-- Terminal Left: Agent side -->
+      <div class="x402-terminal">
+        <div class="term-titlebar">
+          <div class="term-dots">
+            <div class="term-dot r"></div>
+            <div class="term-dot y"></div>
+            <div class="term-dot g"></div>
+          </div>
+          <div class="term-title">AGENT TERMINAL — x402 FLOW</div>
+        </div>
+        <div class="term-body" id="termLeft">
+          <div class="term-line">
+            <span class="term-prompt">$</span>
+            <span class="term-cmd">curl -s https://api.pikoclaw.sh/skills/browse-agent</span>
+          </div>
+          <div class="term-separator"></div>
+          <div class="term-line"><span class="term-out status402">&lt; HTTP/1.1 402 Payment Required</span></div>
+          <div class="term-line"><span class="term-out">&lt; Content-Type: application/json</span></div>
+          <div class="term-line"><span class="term-out">&lt; X-Payment-Scheme: exact</span></div>
+          <div class="term-line"><span class="term-out">{</span></div>
+          <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="key">"scheme"</span>: <span class="val">"exact"</span>,</span></div>
+          <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="key">"network"</span>: <span class="val">"base"</span>,</span></div>
+          <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="key">"amount"</span>: <span class="usdc">"40000"</span>,</span></div>
+          <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="key">"asset"</span>: <span class="val">"USDC"</span>,</span></div>
+          <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="key">"payTo"</span>: <span class="val">"0xpiko...f3a2"</span></span></div>
+          <div class="term-line"><span class="term-out">}</span></div>
+          <div class="term-separator"></div>
+          <div class="term-line"><span class="term-out" style="color:var(--muted)"># Agent auto-signs EIP-3009 transfer...</span></div>
+          <div class="term-line">
+            <span class="term-prompt">$</span>
+            <span class="term-cmd">curl -H <span style="color:#fbbf24">"X-Payment: eyJzY2hlbWUi..."</span></span>
+          </div>
+          <div class="term-line"><span class="term-out">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--muted)">https://api.pikoclaw.sh/skills/browse-agent</span></span></div>
+          <div class="term-separator"></div>
+          <div class="term-line"><span class="term-out status200">&lt; HTTP/1.1 200 OK</span></div>
+          <div class="term-line"><span class="term-out">&lt; X-Payment-Receipt: 0x9f3a...e821</span></div>
+          <div class="term-line"><span class="term-out">{<span class="key">"skill"</span>: <span style="color:#fbbf24">"browse-agent"</span>, <span class="key">"access"</span>: <span class="usdc">"granted"</span>}</span></div>
+          <div class="term-line" style="margin-top:6px">
+            <span class="term-prompt">$</span>
+            <span class="term-cursor"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Feed Right -->
+      <div class="x402-terminal">
+        <div class="term-titlebar">
+          <div class="term-dots">
+            <div class="term-dot r"></div>
+            <div class="term-dot y"></div>
+            <div class="term-dot g"></div>
+          </div>
+          <div class="term-title">LIVE x402 TRANSACTIONS</div>
+          <div class="feed-live" style="margin-left:auto">
+            <div class="feed-live-dot"></div>
+            LIVE
+          </div>
+        </div>
+        <div class="feed-list" id="liveFeed">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Examples -->
+    <div class="x402-code-grid fade-in">
+      <!-- SKILL.md with x402 -->
+      <div class="x402-code-block">
+        <div class="code-titlebar">
+          <span class="code-filename">SKILL.md (x402 enabled)</span>
+          <span class="code-lang">YAML</span>
+        </div>
+        <pre class="code-content"><code><span class="sy-sep">---</span>
+<span class="sy-key">name</span><span class="sy-colon">:</span> <span class="sy-str">Browse Agent</span>
+<span class="sy-key">description</span><span class="sy-colon">:</span> <span class="sy-str">Autonomous browser for agents</span>
+<span class="sy-key">version</span><span class="sy-colon">:</span> <span class="sy-str">1.2.0</span>
+<span class="sy-key">price</span><span class="sy-colon">:</span> <span class="sy-num">0.04</span>
+
+<span class="sy-comment"># x402 native payment</span>
+<span class="sy-key">x402</span><span class="sy-colon">:</span>
+  <span class="sy-key">enabled</span><span class="sy-colon">:</span> <span class="sy-num">true</span>
+  <span class="sy-key">network</span><span class="sy-colon">:</span> <span class="sy-str">base</span>
+  <span class="sy-key">asset</span><span class="sy-colon">:</span> <span class="sy-str">USDC</span>
+  <span class="sy-key">wallet</span><span class="sy-colon">:</span> <span class="sy-str">"0xYourWalletAddress"</span>
+  <span class="sy-key">endpoint</span><span class="sy-colon">:</span> <span class="sy-str">"https://api.pikoclaw.sh/skills/browse-agent"</span>
+
+<span class="sy-comment"># fallback for human buyers</span>
+<span class="sy-key">paypal_email</span><span class="sy-colon">:</span> <span class="sy-str">"you@example.com"</span>
+
+<span class="sy-key">tags</span><span class="sy-colon">:</span>
+  <span class="sy-dash">-</span> <span class="sy-tag">browser</span>
+  <span class="sy-dash">-</span> <span class="sy-tag">playwright</span>
+  <span class="sy-dash">-</span> <span class="sy-tag">automation</span>
+<span class="sy-sep">---</span></code></pre>
+      </div>
+
+      <!-- Server middleware code -->
+      <div class="x402-code-block">
+        <div class="code-titlebar">
+          <span class="code-filename">server.ts (x402 middleware)</span>
+          <span class="code-lang">TYPESCRIPT</span>
+        </div>
+        <pre class="code-content"><code><span class="sy-comment">// npm install x402-express</span>
+<span class="sy-key">import</span> { <span class="sy-fn">paymentMiddleware</span> } <span class="sy-key">from</span> <span class="sy-str">'x402-express'</span>
+<span class="sy-key">import</span> { <span class="sy-fn">facilitator</span> } <span class="sy-key">from</span> <span class="sy-str">'x402/facilitators'</span>
+
+<span class="sy-key">const</span> <span class="sy-param">wallet</span> = <span class="sy-str">"0xYourWalletAddress"</span>
+
+<span class="sy-param">app</span>.<span class="sy-fn">use</span>(<span class="sy-fn">paymentMiddleware</span>(
+  <span class="sy-param">wallet</span>,
+  {
+    <span class="sy-path">"GET /skills/browse-agent"</span>: {
+      <span class="sy-key">price</span>: <span class="sy-str">"$0.04"</span>,
+      <span class="sy-key">network</span>: <span class="sy-str">"base"</span>,
+    },
+    <span class="sy-path">"GET /skills/code-review"</span>: {
+      <span class="sy-key">price</span>: <span class="sy-str">"$0.10"</span>,
+      <span class="sy-key">network</span>: <span class="sy-str">"base"</span>,
+    },
+  },
+  { <span class="sy-key">facilitator</span>: <span class="sy-fn">facilitator</span>(<span class="sy-str">"base"</span>) }
+))
+
+<span class="sy-comment">// Routes auto-protected by x402</span>
+<span class="sy-param">app</span>.<span class="sy-fn">get</span>(<span class="sy-str">"/skills/:id"</span>,
+  (<span class="sy-param">req</span>, <span class="sy-param">res</span>) => {
+    <span class="sy-param">res</span>.<span class="sy-fn">json</span>({ <span class="sy-key">skill</span>: <span class="sy-param">req</span>.<span class="sy-param">params</span>.<span class="sy-param">id</span>, <span class="sy-key">access</span>: <span class="sy-str">"granted"</span> })
+  }
+)</code></pre>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── VALUE PROP ── -->
+<div class="vp-section">
+  <div class="vp-inner">
+    <div class="vp-header">
+      <div class="vp-eyebrow">WHY PIKOCLAW</div>
+      <div class="vp-headline">THE SKILL ECONOMY<br>FOR AI AGENTS</div>
+    </div>
+    <div class="vp-grid">
+      <div class="vp-card">
+        <div class="vp-num">01</div>
+        <div class="vp-label">FOR SKILL<br>BUILDERS</div>
+        <p class="vp-text">You're already shipping high-quality tools, prompts, and agent code. PikoClaw gives that work an economic exit. List a private repo, set a price in the <code>SKILL.md</code>, add <code>x402.wallet</code> (USDC on Base) atau <code>paypal_email</code> — GitHub org kamu jadi storefront. No dashboard. No CMS. The repo is the product.</p>
+        <div class="vp-tagline">BUY &amp; SELL CODE — WITHOUT LEAVING GITHUB</div>
+      </div>
+      <div class="vp-card">
+        <div class="vp-num">02</div>
+        <div class="vp-label">FOR AGENT<br>DESIGNERS</div>
+        <p class="vp-text">Stop rebuilding the same foundational layer on every project. Buy proven capabilities, plug them directly into your intelligence engine, and build your differentiator on top. Your data stays local. You own the execution. Your agent shops automatically dengan <code>x402</code> — no human checkout, agent pays in microseconds.</p>
+        <div class="vp-tagline">PLUG &amp; PLAY AGENT CAPABILITIES</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── GET LISTED ── -->
+<div class="onboard-section" id="sell">
+  <div class="onboard-inner">
+
+    <div class="onboard-lead-wrap">
+      <div>
+        <div class="onboard-eyebrow">GET LISTED</div>
+        <h2 class="onboard-title">BUILD AND SELL<br>FROM GITHUB</h2>
+        <p class="onboard-sub">PikoClaw turns your GitHub organization into a storefront. Install the app, add a <code>SKILL.md</code> to any private repo, and your catalog goes live automatically — zero dashboard, zero manual listings. Each repo is its own product. Enable <code>x402</code> untuk agent-native payments langsung ke wallet kamu.</p>
+      </div>
+
+      <div>
+        <div class="onboard-code">
+          <div class="code-chrome">
+            <div class="code-chrome-dots"><span></span><span></span><span></span></div>
+            <div class="code-chrome-filename">SKILL.md</div>
+          </div>
+          <pre class="code-body"><code><span class="sy-sep">---</span>
+<span class="sy-key">name</span><span class="sy-colon">:</span> <span class="sy-str">Browse Agent</span>
+<span class="sy-key">description</span><span class="sy-colon">:</span> <span class="sy-str">Autonomous browser for agents</span>
+<span class="sy-key">price</span><span class="sy-colon">:</span> <span class="sy-num">0.04</span>
+
+<span class="sy-key">x402</span><span class="sy-colon">:</span>
+  <span class="sy-key">enabled</span><span class="sy-colon">:</span> <span class="sy-num">true</span>
+  <span class="sy-key">network</span><span class="sy-colon">:</span> <span class="sy-str">base</span>
+  <span class="sy-key">asset</span><span class="sy-colon">:</span> <span class="sy-str">USDC</span>
+  <span class="sy-key">wallet</span><span class="sy-colon">:</span> <span class="sy-str">"0xYourWalletAddress"</span>
+  <span class="sy-key">endpoint</span><span class="sy-colon">:</span> <span class="sy-str">"https://api.pikoclaw.sh/skills/browse-agent"</span>
+
+<span class="sy-key">paypal_email</span><span class="sy-colon">:</span> <span class="sy-str">"you@example.com"</span>
+<span class="sy-key">tags</span><span class="sy-colon">:</span>
+  <span class="sy-dash">-</span> <span class="sy-tag">browser</span>
+  <span class="sy-dash">-</span> <span class="sy-tag">playwright</span>
+  <span class="sy-dash">-</span> <span class="sy-tag">automation</span>
+<span class="sy-sep">---</span>
+<span class="sy-comment"># Full skill documentation here.</span>
+<span class="sy-comment"># Agents read this to understand usage.</span></code></pre>
+          <div class="code-note">
+            Enable <code>x402</code> untuk agent-native payments. Tanpa x402, skill hanya bisa dibeli manual via PayPal.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-wrap">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-label">CREATE A GITHUB ORG</div>
+          <p>Free. Your org becomes your storefront identity. Private repos become individual products.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-label">INSTALL THE PIKOCLAW GITHUB APP</div>
+          <p>Grant read access to your private skill repos. PikoClaw auto-discovers every <code>SKILL.md</code> and builds your public catalog.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-label">ADD SKILL.MD WITH x402 CONFIG</div>
+          <p>Set <code>x402.enabled: true</code>, masukkan Base wallet address, dan pilih harga. PikoClaw auto-deploy payment middleware ke endpoint kamu.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div>
+          <div class="step-label">YOUR SKILL IS LIVE — AI AGENTS CAN PAY INSTANTLY</div>
+          <p>Buyers pay via USDC (x402, agent-native, milidetik) atau PayPal (human). Access granted otomatis. Revenue langsung ke wallet kamu — no middleman.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Cards -->
+    <div class="divider-line">
+      <span class="divider-bar"></span>
+      <span class="divider-txt">PLATFORM APPS</span>
+      <span class="divider-bar"></span>
+    </div>
+
+    <div class="app-cards-grid" id="apps">
+      <a class="app-card" href="#">
+        <div class="app-head">
+          <div class="app-icon">
+            <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+              <path d="M5 20 C5 20 7 13 10 10 C10 10 8 6 10 4 C12 2 13 5 12 8 C15 6 18 7 18 10 C18 13 15 14 13 13 C11 15 11 20 11 20" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <div>
+            <div class="app-name">PikoClaw</div>
+            <div class="app-type">SELLER APP</div>
+          </div>
+          <div class="app-live">
+            <span class="live-dot"></span>
+            LIVE
+          </div>
+        </div>
+        <div class="app-desc">Install on your GitHub org. PikoClaw scans your repositories, reads every <code>SKILL.md</code>, builds your public catalog, dan auto-deploys x402 payment endpoints untuk setiap skill. No manual setup.</div>
+        <div class="app-foot">
+          <div class="app-meta">
+            <span>x402 NATIVE</span>
+            <span class="app-meta-sep">///</span>
+            <span>AUTO-CATALOG</span>
+          </div>
+          <div class="app-install-btn">INSTALL ›</div>
+        </div>
+      </a>
+
+      <div class="app-card soon">
+        <div class="app-head">
+          <div class="app-icon alt">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div>
+            <div class="app-name">ClawBot</div>
+            <div class="app-type">BUYER AGENT</div>
+          </div>
+          <div class="soon-badge">COMING SOON</div>
+        </div>
+        <div class="app-desc">Give your AI agent scoped autonomy to discover, evaluate, and purchase skills from PikoClaw on your behalf — constrained to the orgs and budgets you define. Fully agent-native via x402 on Base.</div>
+        <div class="app-foot">
+          <div class="app-meta">
+            <span>x402 BUYER</span>
+            <span class="app-meta-sep">///</span>
+            <span>BUDGET LIMITS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span>AGENT-NATIVE · x402 · BASE</span>
+  <a href="https://x.com" target="_blank" rel="noopener">@PIKOCLAW</a>
+  <span>PIKOCLAW.SH</span>
+</footer>
+
+<script>
+  // ── Copy command ──
+  document.getElementById('copyBtn').addEventListener('click', function() {
+    navigator.clipboard.writeText('curl pikoclaw.sh/agent.md');
+    this.style.color = 'var(--accent)';
+    setTimeout(() => this.style.color = '', 1200);
+  });
+
+  // ── Fade in on scroll ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── Animate hero stat count ──
+  const target = 2841;
+  let count = 2700;
+  const el = document.getElementById('agentCount');
+  const tick = () => {
+    count += Math.ceil((target - count) / 8);
+    el.textContent = count.toLocaleString();
+    if (count < target) requestAnimationFrame(tick);
+  };
+  setTimeout(tick, 600);
+
+  // ── Animate tx count ──
+  let txCount = 4100;
+  const txEl = document.getElementById('txCount');
+  const txTick = () => {
+    txCount += Math.ceil((4291 - txCount) / 8);
+    txEl.textContent = txCount.toLocaleString();
+    if (txCount < 4291) requestAnimationFrame(txTick);
+  };
+  setTimeout(txTick, 900);
+
+  // ── x402 Payment Modal ──
+  const skills = document.querySelectorAll('.skill-pay-btn');
+  let currentSkill = null;
+
+  function openPayModal(btn) {
+    const card = btn.closest('.skill-card');
+    const skillName = card.dataset.skill;
+    const price = parseFloat(card.dataset.price);
+    const slug = card.dataset.slug;
+
+    document.getElementById('modalSkillName').textContent = skillName;
+    document.getElementById('modalPrice').textContent = '$' + price.toFixed(2);
+    document.getElementById('modalUsdc').textContent = (price * 1000000).toLocaleString() + ' μUSDC';
+    document.getElementById('mstep1detail').textContent = 'GET /skills/' + slug + ' HTTP/1.1';
+    document.getElementById('mstep3detail').textContent = 'Transferring ' + price.toFixed(2) + ' USDC → 0xpiko...f3a2';
+
+    // reset steps
+    ['mstep1','mstep2','mstep3','mstep4'].forEach(id => {
+      document.getElementById(id).classList.remove('done','active');
+    });
+    document.getElementById('mstep1').classList.add('active');
+    document.getElementById('modalTx').classList.remove('show');
+    document.getElementById('modalPayBtn').disabled = false;
+    document.getElementById('modalPayBtn').textContent = 'SIMULATE x402 PAYMENT';
+
+    document.getElementById('payModal').classList.add('open');
+    currentSkill = { name: skillName, price, slug };
+  }
+
+  document.getElementById('modalClose').addEventListener('click', () => {
+    document.getElementById('payModal').classList.remove('open');
+  });
+  document.getElementById('modalCancelBtn').addEventListener('click', () => {
+    document.getElementById('payModal').classList.remove('open');
+  });
+  document.getElementById('payModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('payModal')) {
+      document.getElementById('payModal').classList.remove('open');
+    }
+  });
+
+  document.getElementById('modalPayBtn').addEventListener('click', function() {
+    this.disabled = true;
+    this.textContent = 'PROCESSING...';
+    const steps = ['mstep1','mstep2','mstep3','mstep4'];
+    let i = 0;
+    const delays = [0, 800, 1800, 3000];
+
+    steps.forEach((id, idx) => {
+      setTimeout(() => {
+        steps.forEach(s => document.getElementById(s).classList.remove('active'));
+        document.getElementById(id).classList.add('done');
+        if (idx < steps.length - 1) {
+          document.getElementById(steps[idx + 1]).classList.add('active');
+        } else {
+          // done
+          const txHash = '0x' + Array.from({length:40}, () => Math.floor(Math.random()*16).toString(16)).join('');
+          const txEl = document.getElementById('modalTx');
+          txEl.textContent = '✅ TX CONFIRMED · ' + txHash.slice(0,20) + '...' + txHash.slice(-8) + ' · BASE MAINNET';
+          txEl.classList.add('show');
+          document.getElementById('modalPayBtn').textContent = '✅ PAYMENT COMPLETE';
+          // add to live feed
+          addFeedItem(currentSkill.name, currentSkill.price);
+        }
+      }, delays[idx]);
+    });
+  });
+
+  // ── Live Transaction Feed ──
+  const feedAgents = [
+    'claude-agent-7f2a', 'gpt4o-worker-3b1c', 'gemini-pro-9e4d',
+    'llama-runner-2a8f', 'mistral-agent-5c3e', 'qwen-bot-1d7b',
+    'deepseek-r1-8f4a', 'custom-agent-4c2e', 'mcp-client-9b1f',
+    'auto-gpt-7a3d', 'crewai-node-5f8c', 'langgraph-6e2a'
+  ];
+  const feedSkills = [
+    { name: 'BROWSE AGENT', price: 0.04 },
+    { name: 'CODE REVIEW', price: 0.10 },
+    { name: 'NL → SQL', price: 0.03 },
+    { name: 'VISION EXTRACT', price: 0.08 },
+    { name: 'DATA CLEANER', price: 0.05 },
+    { name: 'EMAIL DRAFT', price: 0.02 },
+    { name: 'GIT OPS', price: 0.07 },
+  ];
+
+  function randItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function randHash() {
+    return '0x' + Array.from({length:8}, () => Math.floor(Math.random()*16).toString(16)).join('');
+  }
+  function timeAgo(sec) {
+    if (sec < 5) return 'just now';
+    if (sec < 60) return sec + 's ago';
+    return Math.floor(sec/60) + 'm ago';
+  }
+
+  function addFeedItem(skillName, price) {
+    const feed = document.getElementById('liveFeed');
+    const agent = randItem(feedAgents);
+    const hash = randHash();
+    const item = document.createElement('div');
+    item.className = 'feed-item';
+    item.innerHTML = `
+      <span class="feed-agent"><span>${agent}</span> paid for ${skillName}</span>
+      <span>
+        <span class="feed-amount">$${price.toFixed(2)}</span>
+        <span class="feed-hash">${hash}</span>
+      </span>
+    `;
+    feed.insertBefore(item, feed.firstChild);
+    while (feed.children.length > 10) feed.removeChild(feed.lastChild);
+  }
+
+  // Pre-populate feed
+  const initialFeed = [
+    { skill: 'BROWSE AGENT', price: 0.04, sec: 3 },
+    { skill: 'CODE REVIEW', price: 0.10, sec: 11 },
+    { skill: 'GIT OPS', price: 0.07, sec: 18 },
+    { skill: 'NL → SQL', price: 0.03, sec: 29 },
+    { skill: 'VISION EXTRACT', price: 0.08, sec: 44 },
+    { skill: 'EMAIL DRAFT', price: 0.02, sec: 57 },
+    { skill: 'DATA CLEANER', price: 0.05, sec: 71 },
+  ];
+  initialFeed.forEach(f => addFeedItem(f.skill, f.price));
+
+  // Auto-add new transactions
+  function spawnRandomTx() {
+    const skill = randItem(feedSkills);
+    addFeedItem(skill.name, skill.price);
+    setTimeout(spawnRandomTx, 2000 + Math.random() * 4000);
+  }
+  setTimeout(spawnRandomTx, 3000);
+</script>
+
+</body>
+</html>
